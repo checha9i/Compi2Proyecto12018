@@ -1001,14 +1001,14 @@ Boton.setBounds(20, 20, 20, 20);
 
     
     
-public void GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
+public void GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista,int indexcss){
 switch(nodoactual.valor){
     case "Estilo":
         for (Nodo hijo : nodoactual.hijos) {
             for (Nodo hijo2 : hijo.hijos.get(0).hijos) {
           System.out.println(hijo2.valor);     
           
-                
+          
                 
             }        
             
