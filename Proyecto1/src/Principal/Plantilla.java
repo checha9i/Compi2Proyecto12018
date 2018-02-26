@@ -10,12 +10,16 @@ import Acciones.ListaCSS;
 import Acciones.RecorrerArbol;
 import Analizadores.Lexico;
 import Analizadores.Sintactico;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 /**
@@ -28,15 +32,29 @@ public class Plantilla extends javax.swing.JPanel {
      * Creates new form Plantilla
      */
     
-      ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
+     public int ContPestañas=1;
+    JPanel pintar=new JPanel();
+    
+      JScrollPane añadirpintar=new JScrollPane();
+    ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
+   
+    
      
     public Plantilla() {
 
         initComponents();
         
-       MostrarPagina.setPreferredSize(new Dimension(1192, 389));
-      MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
-      
+       jToolBar1.setPreferredSize(new Dimension(106, 32));
+       jToolBar1.setLocation(0, 0);
+      MostrarPagina.setPreferredSize(new Dimension(1192, 389));
+    //  MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
+             pintar.setBackground(Color.white);
+    
+    // pintar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
+        añadirpintar.setBorder(BorderFactory.createLineBorder(Color.white));
+        pintar.setBorder(BorderFactory.createLineBorder(Color.white));
+          
     }
 
     /**
@@ -73,6 +91,11 @@ public class Plantilla extends javax.swing.JPanel {
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton2);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/restart.png"))); // NOI18N
@@ -102,7 +125,7 @@ public class Plantilla extends javax.swing.JPanel {
         MostrarPagina.setLayout(MostrarPaginaLayout);
         MostrarPaginaLayout.setHorizontalGroup(
             MostrarPaginaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 769, Short.MAX_VALUE)
         );
         MostrarPaginaLayout.setVerticalGroup(
             MostrarPaginaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,12 +144,22 @@ public class Plantilla extends javax.swing.JPanel {
         jButton5.setFocusable(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton5);
 
         jButton6.setText("Añadir A Favoritos");
         jButton6.setFocusable(false);
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton6);
 
         javax.swing.GroupLayout PlantillaLayout = new javax.swing.GroupLayout(Plantilla);
@@ -170,8 +203,11 @@ public class Plantilla extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //String entrada=Entrada.getText();
 
         MostrarPagina.removeAll();
 
@@ -188,21 +224,40 @@ public class Plantilla extends javax.swing.JPanel {
             parser.parse();
             System.out.println("Total: " + g.tamañoarbol(1, parser.raiz));
 
-            int[] posicion=new int[2];
+            int[] posicion=new int[4];
             posicion[0]=0;
             posicion[1]=0;
-            g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista);
+            posicion[2]=MostrarPagina.getHeight();
+            posicion[3]=MostrarPagina.getHeight();
+
+            g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista,posicion);
+          //  posicion= g.Analizar(comp, pintar,Pestañas,lista,posicion);
 
             /*Iterator<String> nombreIterator = Cosas.iterator();
             while (nombreIterator.hasNext()) {
                 String elemento = nombreIterator.next();
                 System.out.print(elemento + "\n");
             }*/
+            añadirpintar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            añadirpintar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            //  scrollPane.setBounds(0,0,MostrarPagina.getPreferredSize());
+            //  scrollPane.setBounds(new Rectangle(MostrarPagina.getPreferredSize()));
+
+            añadirpintar.setBackground(Color.WHITE);
+            añadirpintar.setPreferredSize(MostrarPagina.getSize());
+
+            añadirpintar.setViewportView(pintar);
+
+            añadirpintar.setBounds(0, 0, pintar.getWidth(),pintar.getHeight());
+            MostrarPagina.add(añadirpintar);
+            //MostrarPagina.add(scrollPane);
 
             //System.out.println(Cosas.size());
         } catch (Exception ex) {
             Logger.getLogger(UsacWeb.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        //String entrada=Entrada.getText();
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -210,6 +265,14 @@ public class Plantilla extends javax.swing.JPanel {
     private void EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntradaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_EntradaActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

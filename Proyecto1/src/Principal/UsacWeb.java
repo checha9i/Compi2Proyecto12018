@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -58,10 +59,11 @@ public class UsacWeb extends javax.swing.JFrame {
        jToolBar1.setPreferredSize(new Dimension(106, 32));
        jToolBar1.setLocation(0, 0);
       MostrarPagina.setPreferredSize(new Dimension(1192, 389));
-      MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
+    //  MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
              pintar.setBackground(Color.white);
     
-        pintar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+    // pintar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
         añadirpintar.setBorder(BorderFactory.createLineBorder(Color.white));
         pintar.setBorder(BorderFactory.createLineBorder(Color.white));
     }
@@ -444,10 +446,14 @@ public class UsacWeb extends javax.swing.JFrame {
             parser.parse();
             System.out.println("Total: " + g.tamañoarbol(1, parser.raiz));
 
-            int[] posicion=new int[2];
+            int[] posicion=new int[6];
             posicion[0]=0;
             posicion[1]=0;
-            g.Analizar(comp, pintar,Pestañas,lista);
+            posicion[2]=MostrarPagina.getHeight();
+            posicion[3]=MostrarPagina.getHeight();
+            
+        //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista);    
+           posicion= g.Analizar(comp, pintar,Pestañas,lista,posicion);
 
             /*Iterator<String> nombreIterator = Cosas.iterator();
             while (nombreIterator.hasNext()) {
@@ -462,10 +468,14 @@ public class UsacWeb extends javax.swing.JFrame {
         
         añadirpintar.setBackground(Color.WHITE);
                 añadirpintar.setPreferredSize(MostrarPagina.getSize());
-                
+               
+               
           añadirpintar.setViewportView(pintar);
           
-          MostrarPagina.add(añadirpintar);
+            pintar.setSize(posicion[2], posicion[3]);
+        
+         añadirpintar.setBounds(0, 0, pintar.getWidth(),pintar.getHeight());
+        MostrarPagina.add(añadirpintar);
             //MostrarPagina.add(scrollPane);
             
             //System.out.println(Cosas.size());

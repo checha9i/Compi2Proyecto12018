@@ -38,8 +38,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RecorrerArbol {
 public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD);
-    public void Analizar(String entrada,JPanel cosas,JTabbedPane pestaña,ArrayList<ListaCSS> listacss) {
-
+    public int[] Analizar(String entrada,JPanel cosas,JTabbedPane pestaña,ArrayList<ListaCSS> listacss,int[] pos) {
+      int[] posicion=new int[6];
+      posicion[0]=pos[0];
+        posicion[1]=pos[1];
+        posicion[2]=pos[2];
+        posicion[3]=pos[3];
+        
         try {
             //crear el lexico
             Lexico lexico = new Lexico(new StringReader(entrada));
@@ -49,20 +54,21 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
             //ejecutar el analisis
             parser.parse();
 
-            JOptionPane.showMessageDialog(null, "Analisis Completo", "Ejemplo 1 AST", 1);
 
             //Graficar
             //this.graficarAST(parser.raiz);            
             Graficador g = new Graficador();
             g.graficarAST(parser.raiz);
-
+      
             //Recorrido
-        this.recorrido(parser.raiz, cosas,pestaña, listacss);
+        posicion= this.recorrido(parser.raiz, cosas,pestaña, listacss, posicion);
+            JOptionPane.showMessageDialog(null, "Analisis Completo", "CHTML", 1);
+
         } catch (Exception ex) {
             Logger.getLogger(Compilador.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Ocurrio un grave problema", "Ejemplo 1 AST", 2);
+            JOptionPane.showMessageDialog(null, "Ocurrio un grave problema", "CHTML", 2);
         }
-
+return posicion;
     }
 
     public int tamañoarbol(int tamaño, Nodo nodoactual) {
@@ -75,26 +81,31 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
         return tamaño;
     }
     
-    public  void recorrido(Nodo nodoactual, JPanel html,JTabbedPane pestaña,ArrayList<ListaCSS> listacss) {
+    public  int[] recorrido(Nodo nodoactual, JPanel html,JTabbedPane pestaña,ArrayList<ListaCSS> listacss,int[] pos) {
+        int[] posicion= new int[6];
+        posicion[0]=pos[0];
+        posicion[1]=pos[1];
+        posicion[2]=pos[2];
+        posicion[3]=pos[3];
         
         switch (nodoactual.valor) {
             case "chtml":
                 
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña, listacss);
+            posicion=      this.recorrido(hijo, html, pestaña, listacss, posicion);
                 }
                 break;
                 //EMPIEZA ENCABEZADO
             case "encabezado":
                 
                 
-                this.recorrido((nodoactual.hijos.get(0)), html, pestaña, listacss);
+              posicion=this.recorrido((nodoactual.hijos.get(0)), html, pestaña, listacss, posicion);
                 
                 break;
                 
             case "ContenidoEncabezado":
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña, listacss);
+                   posicion= this.recorrido(hijo, html, pestaña, listacss, posicion);
                 }
                 break;
             case "CCSS":
@@ -117,19 +128,20 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
                 
                 
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña, listacss);
+                  posicion=  this.recorrido(hijo, html, pestaña, listacss, posicion);
                 }
                 break;
                 
             case "ContenidoCuerpo":
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña, listacss);
+                    this.recorrido(hijo, html, pestaña, listacss, posicion);
                 }
                 break;
                 
             case "saltofin":
                 
-              
+
+                            posicion[1]+=100;
                 break;
             case "panel":
                 
@@ -199,7 +211,7 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
                    
                         for (Nodo hijo : nodoactual.hijos.get(1).hijos.get(0).hijos) {
                              System.out.println("Contenido Panel"+hijo.valor);
-                    this.recorrido(hijo, panel, pestaña, listacss);
+                    this.recorrido(hijo, panel, pestaña, listacss, posicion);
                 }
                     
                 html.add(panel);
@@ -996,7 +1008,16 @@ Boton.setBounds(20, 20, 20, 20);
                 //FIN CUERPO
             default:
                 //throw new AssertionError();
+                posicion[0]=pos[0];
+        posicion[1]=pos[1];
+        posicion[2]=pos[2];
+        posicion[3]=pos[3];
+               
+                
+                
         }
+        
+        return posicion;
   }
 
     
