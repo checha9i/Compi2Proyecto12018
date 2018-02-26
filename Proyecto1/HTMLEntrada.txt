@@ -1,0 +1,82 @@
+<CHTML>
+
+ <ENCABEZADO>
+
+ <CCSS ruta="aca";><FIN-CCSS>
+ <CJS ruta="aca";><FIN-CJS>
+
+ <TITULO>hola<FIN-TITULO>
+ <FIN-ENCABEZADO>
+  <CUERPO>
+
+ <PANEL id = panel_5; alto =320; ancho=380;>
+<FIN-PANEL>
+ <TEXTO >Nombre<FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_nombre; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;>Resultado<FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_resultado; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;>Comentario<FIN-TEXTO>
+ <TEXTO alto = 120; ancho=200; grupo = salida_texto_2; id= r_comentario; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;><FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_nota_1; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;><FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_nota_2; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <IMAGEN alto = 90; ancho = 200; id=imagen_1;><FIN-IMAGEN>
+  <BOTON grupo = boton_redireccion; alto = 35; ancho = 120; ruta= "C:\proyecto1\informacion.chtml";>Informacion<FIN-BOTON>
+ <enlace> <fin-enlace>
+ <PANEL id = panel_5; alto =320; ancho=380;>
+ <BOTON grupo = boton_redireccion; alto = 35; ancho = 160; ruta= "C:\proyecto1\tabla.chtml";>TablaEstudiante<FIN-BOTON>
+ <BOTON grupo = boton_redireccion; alto = 35; ancho = 100; ruta= "C:\proyecto1\index.chtml";> Principal <FIN-BOTON>
+ 
+ <CAJA_TEXTO alto= 20; ancho =200; id=nombre; grupo=formulario_2;>Nombre<FIN-CAJA_TEXTO>
+ <SPINNER ancho = 50; alto =25; id=nota_2; id=nota_2; grupo=formulario_2;> <FIN-SPINNER>
+ <CAJA id=caja_1; grupo=formulario_2;>
+ <OPCION valor= "promedio"; >Promedio<FIN-OPCION>
+ <OPCION valor= "suma"; >Suma<FIN-OPCION>
+ <OPCION valor= "resta"; >Resta<FIN-OPCION>
+ <OPCION valor= "multiplicar"; >Multiplicacion<FIN-OPCION>
+ <OPCION valor= "7"; ><FIN-OPCION>
+ <OPCION valor= "11"; ><FIN-OPCION>
+ <FIN-CAJA>
+ <fin-panel>
+ 
+
+ <TABLA>
+ <FIL_T>
+ <CB>Nombre<FIN-CB>
+ <CB>Apellido<FIN-CB>
+ <Ct>Edad<FIN-Ct>
+ <FIN-FIL_T>
+<FIL_T>
+ <CT><PANEL id = panel_5; alto =320; ancho=380;>
+  <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;><FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_nota_1; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <TEXTO grupo = salida_texto_1;><FIN-TEXTO>
+ <TEXTO alto = 15; ancho=55; grupo = salida_texto_2; id= r_nota_2; ><FIN-TEXTO>
+ <SALTO-FIN>
+ <IMAGEN alto = 90; ancho = 200; id=imagen_1;><FIN-IMAGEN>
+<FIN-PANEL><FIN-CT>
+ <CT> <TABLA><FIN-TABLA><FIN-CT>
+ <CT><SALTO-FIN><FIN-CT>
+ <FIN-FIL_T>
+
+<FIN-TABLA>
+<BOTON> <//- Contenido del botón -//> <FIN-BOTON>
+<BOTON> "Enviar" <FIN-BOTON>
+<BOTON click=salida_consola();>"Este es un botón" <FIN-BOTON>
+<BOTON ruta="c://pro_1/index.chtml";> "Principal" <FIN-BOTON>
+
+
+ <FIN-CUERPO>
+
+<FIN-CHTML>
+
+
+

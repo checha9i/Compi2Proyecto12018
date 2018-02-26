@@ -1,0 +1,932 @@
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Codigo de Usuario
+----------------------------------------------------------------------------*/
+
+//-------------------> Importaciones, Paquetes
+package Analizadores;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+
+
+//-------------------> Codigo para el parser, variables, metodos
+parser code
+{:      
+    public Nodo raiz;
+
+    //-------------------> Metodo al que se llama automaticamente ante algun error sintactico.
+    public void syntax_error(Symbol s)
+    {        
+        System.out.println("Error Sintactico Recuperado /////// lexema: " +s.value+ " Fila: " +s.right+ " Columna: "+s.left);       
+    }
+
+
+    //-------------------> Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        System.out.println("Error Sintactico Panico ////// Lexema: " +s.value+" Fila: "+s.right+ " Columna: "+s.left);        
+    }
+
+
+    public void semantic(Symbol cur_token, String n) 
+    {
+        System.out.println("error semantico ");
+    }
+
+
+    public void semantic(String msg, Object obj) {}
+
+:}
+
+
+//-------------------> Codigo para las acciones gramaticales
+action code
+{:
+:}  
+
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Declaraciones
+----------------------------------------------------------------------------*/
+
+//DECLARACION DE TERMINALES
+terminal String mayor,menor,imagen,parL,parR,mas,menos,div,fila,finfila,ct,cb;
+terminal String tabla,titulo,panel,cuerpo,cjs,ccss,caja,texto,textoa,cajatexto,ruta,chtml,click,boton,finct,fincb;
+terminal String opcion,enlace,fintexto,fintabla,finboton,finencabezado,finspinner,fintextoa,finpanel,fincuerpo,fintitulo,fincaja,finccss,fincjs,finchtml;
+terminal String spinner,saltofin,finopcion,finimagen,finenlace,encabezado,fincajatexto,izquierda,derecha,centrado;
+terminal String por,asignar,parrafo;
+terminal String id,stringcad,valDecimal,identificador,puntoComa,valor,alto,ancho,alineado,grupo;
+
+nonterminal Nodo S,INICIAL, Encabezad,Cuerp,ContEncabezado,ContCuerpo,ListaTabla,ContTabla;
+nonterminal Nodo ParImg,ParEnl,ParOp,ParBtn,ParCaja,ListaEncabezado,ListaCuerpo,NoContPanel,TAlineado;
+nonterminal Nodo ListaCaja, ContCaja,ListaFila,ContFila,Tval,TCad,ParGen,ContParGen,CGen,ListaPanel,ContPanel;
+nonterminal Nodo ContParImg,ContParEnl,ContParOp,ContParBtn,ContParCaja,CPImg,CPBtn,CPEnl,CPCaja,NoCaja,CTabla;
+
+precedence left mas, menos;
+precedence left por, div; 
+
+precedence nonassoc  mayor, menor;
+
+start with INICIAL;
+
+
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Gramatica
+----------------------------------------------------------------------------*/
+INICIAL::= S:raiz
+        {:
+            parser.raiz=raiz;
+        :}
+    | error INICIAL
+    | ;
+
+
+S::= menor chtml:ht mayor Encabezad:sents Cuerp:cuer menor finchtml mayor
+    {:
+/* 
+
+        
+*/
+    Nodo cuerpo = new Nodo("chtml", htleft,htright);
+    cuerpo.hijos.add(sents);    
+    cuerpo.hijos.add(cuer);
+        RESULT = cuerpo;
+    :}
+;
+
+Encabezad::= menor encabezado:ope mayor ListaEncabezado:le  menor finencabezado mayor 
+{:
+  Nodo encabezado = new Nodo("encabezado", opeleft, operight);
+          encabezado.hijos.add(le);
+            RESULT = encabezado;
+:}  
+;
+
+ListaEncabezado::=ListaEncabezado:le ContEncabezado:ce
+{:
+le.hijos.add(ce);
+RESULT = le;
+:}
+|ContEncabezado:ce {:
+    Nodo encabezado =new Nodo("ContenidoEncabezado",celeft,ceright);
+    encabezado.hijos.add(ce);
+    RESULT = encabezado;
+:}
+;
+ContEncabezado::= menor ccss:css ruta asignar stringcad:cad puntoComa mayor menor finccss mayor 
+    {:
+     
+     Nodo ccss = new Nodo("CCSS", cssleft, cssright);
+String cadena= cad.replace("\"","");
+Nodo strin =new Nodo(cadena,cadleft,cadright);
+ccss.hijos.add(strin);          
+
+            RESULT = ccss;
+    :}
+|menor cjs:cs ruta asignar stringcad:cad puntoComa mayor  menor fincjs mayor  
+    {:
+     Nodo cjs = new Nodo("CJS", csleft,csright);
+    String cadena= cad.replace("\"","");
+    Nodo strin =new Nodo(cadena,cadleft,cadright);
+    cjs.hijos.add(strin);          
+    RESULT = cjs;
+    :}
+
+|menor titulo:ti mayor TCad:tx menor fintitulo mayor  
+    {:
+     Nodo titulo = new Nodo("titulo", tileft,tiright);
+    
+     
+           titulo.hijos.add(tx);
+            RESULT = titulo;
+    :}
+;
+
+
+
+
+Cuerp::= menor cuerpo mayor ListaCuerpo:Con menor fincuerpo:op mayor
+    {:
+  Nodo cuerpo = new Nodo("cuerpo", opright, opleft);
+          cuerpo.hijos.add(Con);
+            RESULT = cuerpo;
+        
+    :}
+|menor cuerpo mayor  menor fincuerpo:op mayor
+    {:
+  Nodo cuerpo = new Nodo("cuerpo", opright, opleft);
+       
+            RESULT = cuerpo;
+        
+    :}
+;
+
+
+
+ListaCuerpo::= ListaCuerpo:lc ContCuerpo:cc{:
+    lc.hijos.add(cc);
+    RESULT = lc;
+:}
+|ContCuerpo:cc{:
+    Nodo cuerpo =new Nodo("ContenidoCuerpo",ccleft,ccright);
+    cuerpo.hijos.add(cc);
+    RESULT =cuerpo;
+:};
+
+ListaPanel::= ListaPanel:lc ContPanel:cc{:
+    lc.hijos.add(cc);
+    RESULT = lc;
+:}
+|ContPanel:cc{:
+    Nodo cuerpo =new Nodo("ContenidoPanel",ccleft,ccright);
+    cuerpo.hijos.add(cc);
+    RESULT =cuerpo;
+:};
+
+CGen::= ParGen:pg mayor{:
+Nodo vacio=new Nodo("LParametro");
+vacio.hijos.add(pg);    
+RESULT =vacio;:}
+|mayor
+{:Nodo vacio=new Nodo("Sin Parametros");
+    RESULT =vacio;:}
+;
+CPImg::=ParImg:pg mayor{:
+Nodo vacio=new Nodo("LParametro");
+vacio.hijos.add(pg);    
+RESULT =vacio;:}
+|mayor
+{:Nodo vacio=new Nodo("Sin Parametros");
+    RESULT =vacio;:}
+;
+CPBtn::=ParBtn:pg mayor{:
+Nodo vacio=new Nodo("LParametro");
+vacio.hijos.add(pg);    
+RESULT =vacio;:}
+|mayor
+{:Nodo vacio=new Nodo("Sin Parametros");
+    RESULT =vacio;:}
+;
+CPEnl::=ParEnl:pg mayor{:
+Nodo vacio=new Nodo("LParametro");
+vacio.hijos.add(pg);    
+RESULT =vacio;:}
+|mayor
+{:Nodo vacio=new Nodo("Sin Parametros");
+    RESULT =vacio;:}
+;
+CPCaja::=ParCaja:pg mayor{:
+Nodo vacio=new Nodo("LParametro");
+vacio.hijos.add(pg);    
+RESULT =vacio;:}
+|mayor
+{:Nodo vacio=new Nodo("Sin Parametros");
+    RESULT =vacio;:}
+;
+
+ContCuerpo::= menor texto:tex CGen:pg TCad:tx menor fintexto mayor 
+    {:
+        Nodo texto = new Nodo("texto", texright, texleft);  
+        texto.hijos.add(pg);
+        texto.hijos.add(tx);
+        RESULT = texto;
+    :}
+
+| menor imagen:im CPImg:pi  TCad:tx menor finimagen mayor 
+    {:
+        Nodo imagen = new Nodo("imagen", imright, imleft);  
+         
+        imagen.hijos.add(pi);
+        imagen.hijos.add(tx);
+        RESULT = imagen;
+    :}
+
+| menor boton:bo CPBtn:pb TCad:tx menor finboton mayor 
+    {:
+        Nodo boton = new Nodo("boton", boright, boleft);  
+        boton.hijos.add(pb);
+        boton.hijos.add(tx);
+        RESULT = boton;
+    :}
+
+| menor enlace:en CPEnl:pe TCad:tx menor finenlace mayor 
+    {:
+        Nodo enlace = new Nodo("enlace", enright, enleft);  
+        enlace.hijos.add(pe);
+        enlace.hijos.add(tx);
+        RESULT = enlace;
+    :}
+
+| menor tabla CGen:pg  CTabla:ta fintabla mayor 
+    {:
+        Nodo tabla = new Nodo("tabla", taright, taleft);  
+        tabla.hijos.add(pg);
+        tabla.hijos.add(ta);
+        RESULT = tabla;
+    :}
+
+| menor textoa:texa CGen:pg  TCad:tx menor fintextoa mayor 
+    {:
+        Nodo textoa = new Nodo("textoa", texaright, texaleft);  
+         textoa.hijos.add(pg);
+        textoa.hijos.add(tx);    
+        RESULT = textoa;
+    :}
+
+| menor cajatexto:cat CGen:pg  TCad:tx menor fincajatexto mayor 
+    {:
+        Nodo cajatexto = new Nodo("cajatexto", catright, catleft);  
+        cajatexto.hijos.add(pg);
+        cajatexto.hijos.add(tx);    
+        RESULT = cajatexto;
+    :}
+
+| menor spinner:spi CGen:pg  Tval:va menor finspinner mayor 
+    {:
+        Nodo spinner = new Nodo("spinner", spiright, spileft);  
+        spinner.hijos.add(pg);
+spinner.hijos.add(va);
+        RESULT = spinner;
+    :}
+
+| menor caja:pac CPCaja:pg  NoCaja:lc  fincaja mayor 
+    {:
+        Nodo caja = new Nodo("caja", pacright, pacleft);  
+    caja.hijos.add(pg);    
+    caja.hijos.add(lc);
+        RESULT = caja;
+    :}
+
+| menor panel:pa CGen:pg  NoContPanel:cpn  finpanel mayor
+    {:
+        
+    Nodo panel = new Nodo("panel", paleft,paright);  
+ panel.hijos.add(pg);    
+panel.hijos.add(cpn);
+
+        RESULT = panel;
+    :}
+| menor saltofin:sal mayor
+    {:
+        Nodo saltofin = new Nodo("saltofin", salright, salleft);  
+        
+        RESULT = saltofin;
+    :}
+;
+
+NoContPanel::=ListaPanel:lp menor
+{:
+Nodo vacio=new Nodo("SiTiene",lpleft,lpright);
+vacio.hijos.add(lp);
+    RESULT =vacio;:}
+|menor{:
+Nodo vacio=new Nodo("Vacio");
+    RESULT =vacio
+;:};
+
+
+ContPanel::= menor texto:tex CGen:pg TCad:tx menor fintexto mayor 
+    {:
+        Nodo texto = new Nodo("texto", texright, texleft);  
+        texto.hijos.add(pg);
+        texto.hijos.add(tx);
+        RESULT = texto;
+    :}
+
+| menor imagen:im CPImg:pi  TCad:tx menor finimagen mayor 
+    {:
+        Nodo imagen = new Nodo("imagen", imright, imleft);  
+         
+        imagen.hijos.add(pi);
+        imagen.hijos.add(tx);
+        RESULT = imagen;
+    :}
+
+| menor boton:bo CPBtn:pb TCad:tx menor finboton mayor 
+    {:
+        Nodo boton = new Nodo("boton", boright, boleft);  
+        boton.hijos.add(pb);
+        boton.hijos.add(tx);
+        RESULT = boton;
+    :}
+
+| menor enlace:en CPEnl:pe TCad:tx menor finenlace mayor 
+    {:
+        Nodo enlace = new Nodo("enlace", enright, enleft);  
+        enlace.hijos.add(pe);
+        enlace.hijos.add(tx);
+        RESULT = enlace;
+    :}
+
+| menor tabla CGen:pg  CTabla:ta  fintabla mayor 
+    {:
+        Nodo tabla = new Nodo("tabla", taright, taleft);  
+        tabla.hijos.add(pg);
+        tabla.hijos.add(ta);
+        RESULT = tabla;
+    :}
+
+| menor textoa:texa CGen:pg  TCad:tx menor fintextoa mayor 
+    {:
+        Nodo textoa = new Nodo("textoa", texaright, texaleft);  
+         textoa.hijos.add(pg);
+        textoa.hijos.add(tx);    
+        RESULT = textoa;
+    :}
+
+| menor cajatexto:cat CGen:pg  TCad:tx menor fincajatexto mayor 
+    {:
+        Nodo cajatexto = new Nodo("cajatexto", catright, catleft);  
+        cajatexto.hijos.add(pg);
+        cajatexto.hijos.add(tx);    
+        RESULT = cajatexto;
+    :}
+
+| menor spinner:spi CGen:pg  Tval:va menor finspinner mayor 
+    {:
+        Nodo spinner = new Nodo("spinner", spiright, spileft);  
+        spinner.hijos.add(pg);
+spinner.hijos.add(va);
+        RESULT = spinner;
+    :}
+
+| menor caja:pac CPCaja:pg  NoCaja:lc  fincaja mayor 
+    {:
+        Nodo caja = new Nodo("caja", pacright, pacleft);  
+    caja.hijos.add(pg);    
+    caja.hijos.add(lc);
+        RESULT = caja;
+    :}
+
+| menor panel:pa CGen:pg  NoContPanel:cpn  finpanel mayor
+    {:
+        
+    Nodo panel = new Nodo("panel", paleft,paright);  
+    panel.hijos.add(pg);
+panel.hijos.add(cpn);
+        RESULT = panel;
+    :}
+| menor saltofin:sal mayor
+    {:
+        Nodo saltofin = new Nodo("saltofin", salright, salleft);  
+        
+        RESULT = saltofin;
+    :}
+;
+
+
+NoCaja::=ListaCaja:lc menor{:
+Nodo vacio=new Nodo("Ccaja");
+vacio.hijos.add(lc);    
+RESULT =vacio;:}
+|menor
+{:Nodo vacio=new Nodo("Vacio");
+    RESULT =vacio;:}
+;
+
+ListaCaja::=ListaCaja:lc ContCaja:cc{:
+    lc.hijos.add(cc);
+    RESULT = lc;
+:}
+|ContCaja:cc{:
+    Nodo cuerpo =new Nodo("ContenidoCaja",ccleft,ccright);
+    cuerpo.hijos.add(cc);
+    RESULT =cuerpo;
+
+:};
+ContCaja::=menor opcion:op mayor TCad:tx menor finopcion mayor {:
+Nodo cuerpo =new Nodo("opcion",opleft,opright);
+ 
+        cuerpo.hijos.add(tx);    
+RESULT = cuerpo;
+:}
+|menor opcion:op ParOp:po mayor TCad:tx menor finopcion mayor {:
+Nodo cuerpo =new Nodo("opcion",opleft,opright);
+    cuerpo.hijos.add(po);
+        cuerpo.hijos.add(tx);    
+RESULT = cuerpo;
+:};
+
+CTabla::=ListaTabla:pg menor{:
+Nodo vacio=new Nodo("CTabla",pgleft,pgright);
+vacio.hijos.add(pg);    
+RESULT =vacio;
+:}
+|menor
+{:Nodo vacio=new Nodo("Vacio");
+    RESULT =vacio;:}
+;
+ListaTabla::=ListaTabla:ta ContTabla:ct{:
+
+    ta.hijos.add(ct);
+    RESULT =ta;
+:}
+|ContTabla:cc{:
+   Nodo cuerpo =new Nodo("ContenidoTabla",ccleft,ccright);
+    cuerpo.hijos.add(cc);
+    RESULT =cuerpo;
+:};
+
+ContTabla::=menor fila ParGen:pg mayor ListaFila:li menor finfila mayor {:
+   Nodo cuerpo =new Nodo("fil_t",lileft,liright);
+    cuerpo.hijos.add(pg);
+    cuerpo.hijos.add(li);
+    RESULT =cuerpo;
+:}
+|menor fila mayor ListaFila:li menor finfila mayor {:
+   Nodo cuerpo =new Nodo("fil_t",lileft,liright);
+    cuerpo.hijos.add(li);
+    RESULT =cuerpo;
+:};
+
+ListaFila::= ListaFila:lf ContFila:cf{:
+lf.hijos.add(cf);
+RESULT= lf;
+:}
+| ContFila:cf{:
+Nodo cuerpo =new Nodo("ContFila",cfleft,cfright);
+    cuerpo.hijos.add(cf);
+    RESULT =cuerpo;
+:};
+
+
+ContFila::= menor  cb:cbn ParGen:pg mayor TCad:tx menor fincb mayor{:
+Nodo cuerpo =new Nodo("cb",cbnleft,cbnright);
+ cuerpo.hijos.add(pg);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor cb:cbn mayor TCad:tx menor fincb mayor{:
+Nodo cuerpo =new Nodo("cb",cbnleft,cbnright);
+Nodo para =new Nodo("Sin Parametros");
+cuerpo.hijos.add(para);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor  ct:ctn ParGen:pg mayor TCad:tx menor finct mayor{:
+Nodo cuerpo =new Nodo("ct",ctnleft,ctnright);
+ cuerpo.hijos.add(pg);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor  ct:ctn mayor TCad:tx menor finct mayor{:
+Nodo cuerpo =new Nodo("ct",ctnleft,ctnright);
+Nodo para =new Nodo("Sin Parametros");
+cuerpo.hijos.add(para); 
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor  cb:cbn ParGen:pg mayor NoContPanel:tx  fincb mayor{:
+Nodo cuerpo =new Nodo("cb",cbnleft,cbnright);
+ cuerpo.hijos.add(pg);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor cb:cbn mayor NoContPanel:tx  fincb mayor{:
+Nodo cuerpo =new Nodo("cb",cbnleft,cbnright);
+Nodo para =new Nodo("Sin Parametros");
+cuerpo.hijos.add(para);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor  ct:ctn ParGen:pg mayor NoContPanel:tx finct mayor{:
+Nodo cuerpo =new Nodo("ct",ctnleft,ctnright);
+ cuerpo.hijos.add(pg);
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+|menor  ct:ctn mayor NoContPanel:tx  finct mayor{:
+Nodo cuerpo =new Nodo("ct",ctnleft,ctnright);
+Nodo para =new Nodo("Sin Parametros");
+cuerpo.hijos.add(para); 
+        cuerpo.hijos.add(tx);    
+RESULT =cuerpo;
+:}
+;
+
+Tval::=Tval:tv mas valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum+snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|Tval:tv por valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum*snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|Tval:tv div valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum/snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|Tval:tv menos valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum-snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|valDecimal:val{:
+Nodo numero=new Nodo(val.toString(),valleft,valright);
+
+RESULT = numero;
+:}
+|{:
+Nodo cuerpo = new Nodo("Vacio");
+RESULT =cuerpo;
+:};
+
+TCad::=stringcad:iden{:
+String cadena=iden.replace("\"","");
+Nodo cuerpo = new Nodo(cadena,idenleft,idenright);
+RESULT =cuerpo;
+:}
+|{:
+Nodo cuerpo = new Nodo("Vacio");
+RESULT =cuerpo;
+:};
+
+ParImg::=ParEnl:po ContParImg:cpo{:
+po.hijos.add(cpo);
+RESULT =po;
+:}
+|ContParImg:op{:
+Nodo cuerpo=new Nodo("Parametros",opleft,opright);
+cuerpo.hijos.add(op);
+RESULT = cuerpo;
+:};
+
+
+ContParImg::=ruta:ru asignar stringcad:cad puntoComa{:
+Nodo ruta =new Nodo("ruta",ruleft,ruright);
+String texto=cad.replace("\"","");
+Nodo cadena =new Nodo(texto,cadleft,cadright);
+ruta.hijos.add(cadena);
+RESULT=ruta;
+:}
+|click:cl asignar identificador:iden parL parR puntoComa{:
+Nodo clic =new Nodo("click",clleft,clright);
+Nodo met =new Nodo(iden,clleft,clright);
+clic.hijos.add(met);
+RESULT=clic;
+
+:}
+|id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:};
+
+ParBtn::=ParBtn:po ContParBtn:cpo{:
+po.hijos.add(cpo);
+RESULT =po;
+:}
+|ContParBtn:op{:
+Nodo cuerpo=new Nodo("Parametros",opleft,opright);
+cuerpo.hijos.add(op);
+RESULT = cuerpo;
+:};
+
+
+ContParBtn::=ruta:ru asignar stringcad:cad puntoComa{:
+Nodo ruta =new Nodo("ruta",ruleft,ruright);
+String texto=cad.replace("\"","");
+Nodo cadena =new Nodo(texto,cadleft,cadright);
+ruta.hijos.add(cadena);
+RESULT=ruta;
+:}
+|click:cl asignar identificador:iden parL parR puntoComa{:
+Nodo clic =new Nodo("click",clleft,clright);
+Nodo met =new Nodo(iden,clleft,clright);
+clic.hijos.add(met);
+RESULT=clic;
+
+:}
+|id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+;
+
+
+ParEnl::=ParEnl:po ContParEnl:cpo{:
+po.hijos.add(cpo);
+RESULT =po;
+:}
+|ContParEnl:op{:
+Nodo cuerpo=new Nodo("Parametros",opleft,opright);
+cuerpo.hijos.add(op);
+RESULT = cuerpo;
+:};
+
+ContParEnl::=ruta:ru asignar stringcad:cad puntoComa{:
+Nodo ruta =new Nodo("ruta",ruleft,ruright);
+String texto=cad.replace("\"","");
+Nodo cadena =new Nodo(texto,cadleft,cadright);
+ruta.hijos.add(cadena);
+RESULT=ruta;
+:}
+|id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:};
+
+ParOp::=ParOp:po ContParOp:cpo{:
+po.hijos.add(cpo);
+RESULT =po;
+:}
+|ContParOp:op{:
+Nodo cuerpo=new Nodo("Parametros",opleft,opright);
+cuerpo.hijos.add(op);
+RESULT = cuerpo;
+:};
+
+ContParOp::=valor:ru asignar stringcad:cad puntoComa{:
+Nodo ruta =new Nodo("valor",ruleft,ruright);
+String texto=cad.replace("\"","");
+Nodo cadena =new Nodo(texto,cadleft,cadright);
+ruta.hijos.add(cadena);
+RESULT=ruta;
+:}
+|id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:};
+
+ParGen::=ParGen:pg ContParGen:cpg{:
+pg.hijos.add(cpg);
+RESULT =pg;
+:}
+|ContParGen:cpg{:
+Nodo cuerpo = new Nodo("Parametros",cpgleft,cpgright);
+cuerpo.hijos.add(cpg);
+RESULT = cuerpo;
+:};
+
+ContParGen::=id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+;
+
+ParCaja::=ParCaja:pg ContParCaja:cpg{:
+pg.hijos.add(cpg);
+RESULT =pg;
+:}
+|ContParCaja:cpg{:
+Nodo cuerpo = new Nodo("Parametros",cpgleft,cpgright);
+cuerpo.hijos.add(cpg);
+RESULT = cuerpo;
+:};
+
+ContParCaja::=id:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("id",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|grupo:pg asignar identificador:cad puntoComa{:
+Nodo cuerpo= new Nodo("grupo",pgleft,pgright);
+
+Nodo cadena =new Nodo(cad,cadleft,cadright);
+cuerpo.hijos.add(cadena);
+RESULT=cuerpo;
+:}
+|alto:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("alto",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|ancho:pg asignar Tval:va puntoComa{:
+Nodo cuerpo= new Nodo("ancho",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+|alineado:pg asignar TAlineado:va puntoComa{:
+Nodo cuerpo= new Nodo("alineado",pgleft,pgright);
+
+cuerpo.hijos.add(va);
+RESULT=cuerpo;
+:}
+| click:cl asignar identificador:iden parL parR puntoComa{:
+Nodo clic =new Nodo("click",clleft,clright);
+Nodo met =new Nodo(iden,clleft,clright);
+clic.hijos.add(met);
+RESULT=clic;
+
+:}
+;
+
+TAlineado::=izquierda:ta{:
+Nodo cuerpo=new Nodo("izquierda",taleft,taright);
+RESULT =cuerpo;
+:}
+|derecha:ta{:
+Nodo cuerpo=new Nodo("derecha",taleft,taright);
+RESULT =cuerpo;
+:}
+|centrado:ta{:
+Nodo cuerpo=new Nodo("centrado",taleft,taright);
+RESULT =cuerpo;
+:};

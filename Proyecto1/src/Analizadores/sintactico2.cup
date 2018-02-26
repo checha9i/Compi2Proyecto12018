@@ -1,0 +1,373 @@
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Codigo de Usuario
+----------------------------------------------------------------------------*/
+
+//-------------------> Importaciones, Paquetes
+package Analizadores;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+
+
+//-------------------> Codigo para el parser, variables, metodos
+parser code
+{:      
+    public Nodo raiz;
+
+    //-------------------> Metodo al que se llama automaticamente ante algun error sintactico.
+    public void syntax_error(Symbol s)
+    {        
+        System.out.println("Error Sintactico Recuperado /////// lexema: " +s.value+ " Fila: " +s.right+ " Columna: "+s.left);       
+    }
+
+
+    //-------------------> Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        System.out.println("Error Sintactico Panico ////// Lexema: " +s.value+" Fila: "+s.right+ " Columna: "+s.left);        
+    }
+
+
+    public void semantic(Symbol cur_token, String n) 
+    {
+        System.out.println("error semantico ");
+    }
+
+
+    public void semantic(String msg, Object obj) {}
+
+:}
+
+
+//-------------------> Codigo para las acciones gramaticales
+action code
+{:
+:}  
+
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Declaraciones
+----------------------------------------------------------------------------*/
+
+//DECLARACION DE TERMINALES
+terminal String parL,parR,mas,menos,div,coma,dosPuntos,por,puntoComa;
+terminal String asignar,corchL,corchR,id,cursiva;
+terminal String identificador,grupoe,letra,borde,opaque,tamtex,formato,derecha,visible,alineado,negrilla,centrado;
+terminal String mayuscula,minuscula,colortext,capitalt,izquierda,idelemento,tamelemento,justificado,truebool,falsebool,horizontal,vertical;
+terminal String fondoelemento,autoredimension,selecttextcolor,colorselect,texto,valDecimal,stringcad;
+nonterminal Nodo S,INICIAL,TVal,Grupos,ValBool,Direccion;
+nonterminal Nodo ContenidoID,ContenidoFormato,etiqueta,TAlineado,TFormato,NEstilo,GrupID,ConcatCad;
+
+precedence left mas, menos;
+precedence left por, div; 
+
+start with INICIAL;
+
+
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Gramatica
+----------------------------------------------------------------------------*/
+INICIAL::= S:raiz
+        {:
+            parser.raiz=raiz;
+        :}
+    | error INICIAL
+    | ;
+
+
+S::=  S:op NEstilo:ne 
+    {:
+
+        op.hijos.add(ne);
+        RESULT = op;
+       
+    :}  
+|NEstilo:ne{:
+Nodo cuerpo = new Nodo("Estilos",neleft,neright);
+cuerpo.hijos.add(ne);
+RESULT =cuerpo;
+:}
+;
+
+NEstilo::=  identificador:op corchL Grupos:conid corchR
+{:
+ Nodo cuerpo = new Nodo(op.toString(), opleft,opright);
+        cuerpo.hijos.add(conid);
+      
+        RESULT = cuerpo;
+       
+    :}
+;
+
+Grupos::= Grupos:gr GrupID:gi{:
+  gr.hijos.add(gi);
+        RESULT = gr;
+:}
+|GrupID:ne{:
+Nodo cuerpo = new Nodo("ElementoOGrupo",neleft,neright);
+cuerpo.hijos.add(ne);
+RESULT =cuerpo;
+:}
+;
+
+
+GrupID::= grupoe:gr parL identificador:op parR puntoComa ContenidoID:conid
+{:
+
+Nodo cuerpo=new Nodo("Grupo");
+
+
+Nodo grupo =new Nodo(op.toString(),opleft,opright);
+
+grupo.hijos.add(conid);
+cuerpo.hijos.add(grupo);
+RESULT = cuerpo;
+:}
+ | id:gr parL identificador:op parR puntoComa ContenidoID:conid
+{:
+Nodo cuerpo=new Nodo("ID");
+
+
+Nodo grupo =new Nodo(op.toString(),opleft,opright);
+
+grupo.hijos.add(conid);
+cuerpo.hijos.add(grupo);
+RESULT = cuerpo;
+:}
+;
+
+
+ContenidoID::= ContenidoID:conr etiqueta:et{:
+            conr.hijos.add(et);
+            RESULT = conr;
+            :}
+            | etiqueta:et{:
+            Nodo cuerpo = new Nodo("ContenidoEstilo",etleft,etright);
+            cuerpo.hijos.add(et);
+            RESULT = cuerpo;    
+            :}
+;
+
+etiqueta ::= alineado:al  dosPuntos asignar TAlineado:conal puntoComa  {:
+        Nodo cuerpo = new Nodo("Alineado",alleft,alright);
+        cuerpo.hijos.add(conal);
+        RESULT = cuerpo;
+
+:}
+| texto:te  dosPuntos asignar ConcatCad:valC puntoComa {:
+        Nodo cuerpo = new Nodo("Texto",teleft,teright);
+        
+        cuerpo.hijos.add(valC);
+        RESULT = cuerpo;
+
+:}
+ | formato:fo dosPuntos asignar ContenidoFormato:conf puntoComa {:
+      Nodo formato = new Nodo("formato",foleft,foright);
+        formato.hijos.add(conf);
+        RESULT = formato;
+:}
+ | letra:le dosPuntos asignar ConcatCad:sval puntoComa {:
+      Nodo cuerpo = new Nodo("letra",leleft,leright);
+      
+    cuerpo.hijos.add(sval);
+        RESULT = cuerpo;
+:}
+ | tamtex:ta dosPuntos asignar TVal:Tval puntoComa {:
+      Nodo cuerpo = new Nodo("tamtex",taleft,taright);
+      cuerpo.hijos.add(Tval);
+        RESULT = cuerpo;
+:}
+ | tamelemento:tam dosPuntos asignar corchL TVal:val1 coma TVal:val2 corchR puntoComa {:
+      Nodo cuerpo = new Nodo("tamelemento",tamleft,tamright);
+
+      cuerpo.hijos.add(val1);
+      cuerpo.hijos.add(val2);
+        RESULT = cuerpo;
+:}
+ | fondoelemento:fe dosPuntos asignar ConcatCad:val puntoComa {:
+      Nodo cuerpo = new Nodo("fondoelemento",feleft,feright);
+        cuerpo.hijos.add(val);
+        RESULT = cuerpo;
+:}
+ | selecttextcolor:set dosPuntos asignar ConcatCad:val puntoComa {:
+      Nodo cuerpo = new Nodo("selecttextcolor",setleft,setright);
+        cuerpo.hijos.add(val);
+        RESULT = cuerpo;
+:}
+ | colorselect:cos dosPuntos asignar ConcatCad:val puntoComa {:
+      Nodo cuerpo = new Nodo("colorselect",cosleft,cosright);
+        cuerpo.hijos.add(val);
+        RESULT = cuerpo;
+:}
+ | idelemento:ide dosPuntos asignar identificador:op puntoComa {:
+      Nodo cuerpo = new Nodo("idelemento",ideleft,ideright);
+        Nodo iden = new Nodo(op.toString(),opleft,opright);
+        cuerpo.hijos.add(iden);
+        RESULT = cuerpo;
+:}
+ | autoredimension:are dosPuntos asignar corchL ValBool:bo coma Direccion:di corchR puntoComa {:
+      Nodo cuerpo = new Nodo("autoredimension",areleft,areright);
+        
+        cuerpo.hijos.add(bo);
+        cuerpo.hijos.add(di);
+
+        RESULT = cuerpo;
+:}
+| visible:vi dosPuntos asignar ValBool:bo puntoComa{:
+    Nodo visible = new Nodo("visible",vileft,viright);
+    visible.hijos.add(bo);
+    RESULT = visible;
+:}
+| borde:bor dosPuntos asignar corchL TVal:vd coma ConcatCad:st coma ValBool:vb corchR puntoComa{:
+    Nodo borde= new Nodo("borde",borleft,borright);
+    
+    
+    
+    borde.hijos.add(vd);
+    borde.hijos.add(st);
+    borde.hijos.add(vb);
+    RESULT = borde;
+:}
+| opaque:opa dosPuntos asignar ValBool:vab puntoComa{:
+    Nodo opaque=new Nodo("opaque",opaleft,oparight);
+    opaque.hijos.add(vab);
+    RESULT = opaque;
+:}
+| colortext:cot dosPuntos asignar ConcatCad:stg puntoComa{:
+    Nodo colortext= new Nodo("ColorText",cotleft,cotright); 
+    
+    colortext.hijos.add(stg);
+    RESULT = colortext;
+:}
+    ;
+
+Direccion::=horizontal:ho{:
+    Nodo valor =new Nodo("horizontal",holeft,horight);
+    RESULT = valor;
+:}
+| vertical:ve{:
+Nodo valor =new Nodo("vertical",veleft,veright);
+    RESULT = valor;
+:};
+
+ValBool::= truebool:tr{:
+    Nodo valor =new Nodo("true",trleft,trright);
+    RESULT = valor;
+:}
+| falsebool:fa{:
+Nodo valor =new Nodo("false",faleft,faright);
+    RESULT = valor;
+:};
+
+
+ConcatCad::=ConcatCad:cad mas stringcad:cat{:
+String concatenar = cat.replace("\"","");
+cad.valor=cad.valor+concatenar;
+RESULT = cad;
+:}
+|stringcad:cad{:
+String cadena= cad.replace("\"","");
+Nodo strin =new Nodo(cadena,cadleft,cadright);
+RESULT = strin;
+:}
+;
+
+TVal::=TVal:tv mas valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum+snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|TVal:tv por valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum*snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|TVal:tv div valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum/snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|TVal:tv menos valDecimal:val
+{:
+
+double pnum = Double.parseDouble(tv.valor);
+double snum = Double.parseDouble(val.toString());
+double res = pnum-snum;
+tv.valor=String.valueOf(res);
+RESULT = tv;
+
+:}
+|valDecimal:val{:
+Nodo numero=new Nodo(val.toString(),valleft,valright);
+
+RESULT = numero;
+:}
+;
+
+ContenidoFormato ::= ContenidoFormato:conal coma TFormato:tal
+{:
+conal.hijos.add(tal);
+RESULT =conal;
+:}
+| TFormato:op
+{:
+  Nodo cuerpo =new Nodo("Tipo",opleft,opright);
+  cuerpo.hijos.add(op);
+  RESULT =cuerpo;
+:};
+
+TFormato::= mayuscula:ma{:
+Nodo cuerpo = new Nodo("mayuscula",maleft,maright);
+        RESULT = cuerpo;
+:}
+|minuscula:mi{:
+Nodo cuerpo = new Nodo("minuscula",mileft,miright);
+        RESULT = cuerpo;:}
+|negrilla:neg{:
+Nodo cuerpo = new Nodo("negrilla",negleft,negright);
+        RESULT = cuerpo;
+:}
+|capitalt:cap{:
+Nodo cuerpo = new Nodo("capitalt",capleft,capright);
+        RESULT = cuerpo;
+:}
+|justificado:cap{:
+Nodo cuerpo = new Nodo("justificado",capleft,capright);
+        RESULT = cuerpo;
+:}
+;
+
+TAlineado::= izquierda:iz{:
+        Nodo cuerpo = new Nodo("izquierda",izleft,izright);
+        RESULT = cuerpo;
+    :}
+| derecha:der {:
+        Nodo cuerpo = new Nodo("derecha",derleft,derright);
+        RESULT = cuerpo;
+    :}
+| justificado:jus {:
+        Nodo cuerpo = new Nodo("justificado",jusleft,jusright);
+        RESULT = cuerpo;
+:}
+| centrado:cen
+{:
+        Nodo cuerpo = new Nodo("centrado",cenleft,cenright);
+     
+        RESULT = cuerpo;
+:};
