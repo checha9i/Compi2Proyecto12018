@@ -6,12 +6,14 @@
 package Principal;
 
 import Acciones.Compilador;
+import Acciones.ListaCSS;
 import Acciones.RecorrerArbol;
 import Analizadores.Lexico;
 import Analizadores.Sintactico;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
@@ -25,6 +27,9 @@ public class Plantilla extends javax.swing.JPanel {
     /**
      * Creates new form Plantilla
      */
+    
+      ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
+     
     public Plantilla() {
 
         initComponents();
@@ -186,7 +191,7 @@ public class Plantilla extends javax.swing.JPanel {
             int[] posicion=new int[2];
             posicion[0]=0;
             posicion[1]=0;
-            g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),posicion);
+            g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista);
 
             /*Iterator<String> nombreIterator = Cosas.iterator();
             while (nombreIterator.hasNext()) {

@@ -38,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RecorrerArbol {
 public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD);
-    public int[] Analizar(String entrada,JPanel cosas,JTabbedPane pestaña,int[] posicion) {
+    public void Analizar(String entrada,JPanel cosas,JTabbedPane pestaña,ArrayList<ListaCSS> listacss) {
 
         try {
             //crear el lexico
@@ -57,12 +57,12 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
             g.graficarAST(parser.raiz);
 
             //Recorrido
-        this.recorrido(parser.raiz, cosas,pestaña,posicion);
+        this.recorrido(parser.raiz, cosas,pestaña, listacss);
         } catch (Exception ex) {
             Logger.getLogger(Compilador.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Ocurrio un grave problema", "Ejemplo 1 AST", 2);
         }
-return posicion;
+
     }
 
     public int tamañoarbol(int tamaño, Nodo nodoactual) {
@@ -75,30 +75,33 @@ return posicion;
         return tamaño;
     }
     
-    public  int[] recorrido(Nodo nodoactual, JPanel html,JTabbedPane pestaña,int[] posicion) {
+    public  void recorrido(Nodo nodoactual, JPanel html,JTabbedPane pestaña,ArrayList<ListaCSS> listacss) {
         
         switch (nodoactual.valor) {
             case "chtml":
                 
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña,posicion);
+                    this.recorrido(hijo, html, pestaña, listacss);
                 }
                 break;
                 //EMPIEZA ENCABEZADO
             case "encabezado":
                 
                 
-                this.recorrido((nodoactual.hijos.get(0)), html, pestaña,posicion);
+                this.recorrido((nodoactual.hijos.get(0)), html, pestaña, listacss);
                 
                 break;
                 
             case "ContenidoEncabezado":
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña,posicion);
+                    this.recorrido(hijo, html, pestaña, listacss);
                 }
                 break;
             case "CCSS":
-                
+              String urlcss=nodoactual.hijos.get(0).valor;
+              listacss = new ArrayList<ListaCSS>();
+             
+              
                 break;
             case "CJS":
                 
@@ -114,13 +117,13 @@ return posicion;
                 
                 
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña,posicion);
+                    this.recorrido(hijo, html, pestaña, listacss);
                 }
                 break;
                 
             case "ContenidoCuerpo":
                 for (Nodo hijo : nodoactual.hijos) {
-                    this.recorrido(hijo, html, pestaña,posicion);
+                    this.recorrido(hijo, html, pestaña, listacss);
                 }
                 break;
                 
@@ -140,7 +143,7 @@ return posicion;
                     panel.setAlignmentX(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
                     
-                    posicion[0]+=0;
+                     
                     panel.setPreferredSize(new Dimension(10,10));
                 }
                 else{
@@ -184,7 +187,7 @@ return posicion;
                     // Objeto.setSize(alto, ancho);
                     panel.setAlignmentX(alineado);
                    panel.setPreferredSize(new Dimension(alto,ancho));
-                    posicion[0]+=0;
+                     
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -196,7 +199,7 @@ return posicion;
                    
                         for (Nodo hijo : nodoactual.hijos.get(1).hijos.get(0).hijos) {
                              System.out.println("Contenido Panel"+hijo.valor);
-                    this.recorrido(hijo, panel, pestaña,posicion);
+                    this.recorrido(hijo, panel, pestaña, listacss);
                 }
                     
                 html.add(panel);
@@ -221,8 +224,7 @@ return posicion;
                     // Objeto.setSize(100, 15);
                     textarea.setAlignmentX(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    textarea.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), textarea.getPreferredSize()));
-                    posicion[0]+=0;
+        
                      textarea.setLineWrap(true);
                 textarea.setRows(5);
                 textarea.setColumns(25);
@@ -272,8 +274,7 @@ return posicion;
                     
                     textarea.setRows(alto);
                     textarea.setColumns(ancho);
-                    textarea.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),textarea.getSize()));
-                    posicion[0]+=0;
+                  
                     textarea.setRows(textarea.getSize().height);
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -296,8 +297,7 @@ return posicion;
                     // Objeto.setSize(100, 15);
                     cajaopcion.setAlignmentX(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    cajaopcion.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), cajaopcion.getPreferredSize()));
-                    posicion[0]+=0;
+                   
                     
                 }
                 else{
@@ -341,8 +341,7 @@ return posicion;
                     // Objeto.setSize(alto, ancho);
                     cajaopcion.setAlignmentX(alineado);
                     cajaopcion.setSize(alto, ancho);
-                    cajaopcion.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),cajaopcion.getSize()));
-                    posicion[0]+=0;
+                    
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -430,9 +429,7 @@ return posicion;
                 if(nodoactual.hijos.get(0).valor=="Sin Parametros"){
                     // Objeto.setSize(100, 15);
                     textfield.setAlignmentX(SwingConstants.CENTER);
-                    // Objeto.setLocation(posicion[0],posicion[1]);
-                    textfield.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), textfield.getPreferredSize()));
-                    posicion[0]+=0;
+                    
                    JTextField aux=new JTextField(10);
                    textfield=aux;
                 }
@@ -479,7 +476,6 @@ return posicion;
                     // Objeto.setSize(alto, ancho);
                     aux.setAlignmentX(alineado);
                     aux.setSize(alto, ancho);
-                    aux.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),textfield.getSize()));
                     textfield=aux;
                 }
                 
@@ -499,8 +495,7 @@ return posicion;
                     // Objeto.setSize(100, 15);
                     Objeto.setHorizontalAlignment(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    Objeto.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), Objeto.getPreferredSize()));
-                    posicion[0]+=0;
+                   
                     
                 }
                 else{
@@ -544,9 +539,7 @@ return posicion;
                     // Objeto.setSize(alto, ancho);
                     Objeto.setHorizontalAlignment(alineado);
                     Objeto.setSize(alto, ancho);
-                    Objeto.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),Objeto.getSize()));
-                    posicion[0]+=0;
-                    
+                  
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
                 
@@ -565,8 +558,7 @@ return posicion;
                     // Objeto.setSize(100, 15);
                     Objeto3.setHorizontalAlignment(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    Objeto3.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), Objeto3.getPreferredSize()));
-                    posicion[0]+=0;
+                   
                     
                 }
                 else{
@@ -646,8 +638,7 @@ return posicion;
                     
                     Objeto3.setHorizontalAlignment(alineado);
                     
-                    Objeto3.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),Objeto3.getSize()));
-                    
+                  
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -735,8 +726,7 @@ Boton.setBounds(20, 20, 20, 20);
                     // Objeto.setSize(100, 15);
                     Objeto2.setHorizontalAlignment(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    Objeto2.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), Objeto2.getPreferredSize()));
-                    posicion[0]+=0;
+                 
                     
                 }
                 else{
@@ -786,8 +776,7 @@ Boton.setBounds(20, 20, 20, 20);
                     Map attributes = font.getAttributes();
                     attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
                     Objeto2.setFont(font.deriveFont(attributes));
-                    Objeto2.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),Objeto2.getSize()));
-                    posicion[0]+=0;
+                   
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -938,8 +927,7 @@ Boton.setBounds(20, 20, 20, 20);
                     // Objeto.setSize(100, 15);
                     spinner.setAlignmentX(SwingConstants.CENTER);
                     // Objeto.setLocation(posicion[0],posicion[1]);
-                    spinner.setBounds(new Rectangle(new Point(posicion[0], posicion[1]), spinner.getPreferredSize()));
-                    posicion[0]+=0;
+                   
                     
                 }
                 else{
@@ -984,8 +972,7 @@ Boton.setBounds(20, 20, 20, 20);
                     spinner.setAlignmentX(alineado);
                     spinner.setSize(alto, ancho);
                  
-                    spinner.setBounds(new Rectangle(new Point(posicion[0], posicion[1]),spinner.getSize()));
-                    posicion[0]+=0;
+                 
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
@@ -1010,18 +997,17 @@ Boton.setBounds(20, 20, 20, 20);
             default:
                 //throw new AssertionError();
         }
-        return posicion;
-    }
+  }
 
     
     
-public void GuardarCSS(Nodo nodoactual,ListaCSS lista){
+public void GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
 switch(nodoactual.valor){
     case "Estilo":
         for (Nodo hijo : nodoactual.hijos) {
             for (Nodo hijo2 : hijo.hijos.get(0).hijos) {
-               
-               
+          System.out.println(hijo2.valor);     
+          
                 
                 
             }        

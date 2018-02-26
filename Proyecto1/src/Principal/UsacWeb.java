@@ -6,6 +6,7 @@
 package Principal;
 
 import Acciones.Compilador;
+import Acciones.ListaCSS;
 import Acciones.RecorrerArbol;
 import Analizadores.Lexico;
 import Analizadores.Sintactico;
@@ -45,7 +46,10 @@ public class UsacWeb extends javax.swing.JFrame {
     JPanel pintar=new JPanel();
     
       JScrollPane añadirpintar=new JScrollPane();
-    
+    ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
+      
+      
+      
     public UsacWeb() {
      
    
@@ -443,7 +447,7 @@ public class UsacWeb extends javax.swing.JFrame {
             int[] posicion=new int[2];
             posicion[0]=0;
             posicion[1]=0;
-            g.Analizar(comp, pintar,Pestañas,posicion);
+            g.Analizar(comp, pintar,Pestañas,lista);
 
             /*Iterator<String> nombreIterator = Cosas.iterator();
             while (nombreIterator.hasNext()) {
