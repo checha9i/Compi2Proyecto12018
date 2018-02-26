@@ -13,26 +13,7 @@ import java.util.ArrayList;
  * @author Javier
  */
 public class ListaCSS {
-    public int id;
-    public String ID_Grupo;
-    public ArrayList<String> CSS;
-    public ArrayList<ListaCSS> lista;
-    
-    public ListaCSS()
-    {        
-        
-        
-    }
-    
-    public ListaCSS(int val,String CSS)
-    {
-        this.id = val;
-        this.ID_Grupo = ID_Grupo;
-        this.CSS = new ArrayList<String>();
-        this.lista = new ArrayList<ListaCSS>();
-    
-    }
-    
+   
 
 
 }
