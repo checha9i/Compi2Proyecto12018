@@ -6,6 +6,7 @@
 package Principal;
 
 import Acciones.Compilador;
+import Acciones.Historial;
 import Acciones.ListaCSS;
 import Acciones.RecorrerArbol;
 import Analizadores.Lexico;
@@ -48,8 +49,8 @@ public class UsacWeb extends javax.swing.JFrame {
     
       JScrollPane añadirpintar=new JScrollPane();
     ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
-      
-      
+    ArrayList<Historial> historial=new ArrayList<Historial>();  
+     public int conthist;
       
     public UsacWeb() {
      
@@ -426,14 +427,25 @@ public class UsacWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_EntradaActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
  
         
- MostrarPagina.removeAll();
-    
+ if(historial.isEmpty()){
+ conthist=0;
+ }else{
+ conthist+=1;
+ }
+ Historial newhist=new Historial();
+ 
+ 
+      MostrarPagina.repaint();
+
+pintar.removeAll();
+          pintar.repaint();
         
          
         String entrada = "C:\\HTMLEntrada.txt";
+ newhist.Historial(conthist, entrada);       
+ historial.add(newhist);
         LeerArchivo leer = new LeerArchivo();
         String comp = leer.LeerArchivo(entrada);
 
@@ -505,7 +517,10 @@ public class UsacWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         // TODO add your handling code here:
+for(int i=0;i<=historial.size()-1;i++){
+        System.out.println("index: "+historial.get(i).index+", ubicacion: "+historial.get(i).ubicacion);
+}
+// TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed

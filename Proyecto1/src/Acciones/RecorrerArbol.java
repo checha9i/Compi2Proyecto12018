@@ -147,9 +147,9 @@ return posicion;
             case "saltofin":
                 
 
-                          posicion[1]+=100;
+                          posicion[1]=posicion[5]+1;
                           posicion[5]+=posicion[1];
-                          
+                          posicion[0]=0;
                           
                 break;
             case "panel":
@@ -367,7 +367,10 @@ return posicion;
                 
                 //          System.out.println(textarea.getText());
                 //parametros
-                
+                     posicion[2]=100; 
+                   posicion[3]=30;
+                     if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];}
                 if(nodoactual.hijos.get(0).valor=="Sin Parametros"){
                     // Objeto.setSize(100, 15);
                     cajaopcion.setAlignmentX(SwingConstants.CENTER);
@@ -417,7 +420,12 @@ return posicion;
                     cajaopcion.setAlignmentX(alineado);
                     cajaopcion.setSize(alto, ancho);
                     
-                    
+                      
+                                       posicion[2]=ancho; 
+                   posicion[3]=alto;
+                   if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];
+                   } 
                     //  Objeto.setLocation(posicion[0],posicion[1]);
                 }
                 
@@ -470,8 +478,7 @@ return posicion;
                                 }//fin switch
                             }//fin for
                             
-                       
-                            
+                     
                             
                         }
                         
@@ -489,7 +496,15 @@ return posicion;
                         
                     }
                 }
-                
+                cajaopcion.setBounds(posicion[0],posicion[1], posicion[2], posicion[3]);
+                    //  Objeto.setLocation(0,800);
+                    posicion[4]=posicion[0]+posicion[2];
+                   
+                    if (posicion[4]>html.getWidth()){
+                        
+                        html.setSize(posicion[4], posicion[5]);
+                    }
+               posicion[0]=posicion[4]+1;
                   html.add(cajaopcion);
                 
                 
@@ -500,7 +515,10 @@ return posicion;
                 
                 //          System.out.println(textarea.getText());
                 //parametros
-                
+                       posicion[2]=100; 
+                   posicion[3]=10;
+                     if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];}
                 if(nodoactual.hijos.get(0).valor=="Sin Parametros"){
                     // Objeto.setSize(100, 15);
                     textfield.setAlignmentX(SwingConstants.CENTER);
@@ -552,8 +570,22 @@ return posicion;
                     aux.setAlignmentX(alineado);
                     aux.setSize(alto, ancho);
                     textfield=aux;
+                       posicion[2]=ancho; 
+                   posicion[3]=alto;
+                   if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];
+                   } 
+                    
                 }
-                
+                textfield.setBounds(posicion[0],posicion[1], posicion[2], posicion[3]);
+                    //  Objeto.setLocation(0,800);
+                    posicion[4]=posicion[0]+posicion[2];
+                   
+                    if (posicion[4]>html.getWidth()){
+                        
+                        html.setSize(posicion[4], posicion[5]);
+                    }
+               posicion[0]=posicion[4]+1;
                 html.add(textfield);
                 
                 
@@ -758,8 +790,8 @@ return posicion;
                 Boton.setText(nodoactual.hijos.get(1).valor);
                 System.out.println(Boton.getText());
                 //parametros
-                     posicion[2]=100; 
-                   posicion[3]=10;
+                     posicion[2]=Boton.getPreferredSize().width; 
+                   posicion[3]=Boton.getPreferredSize().height;
                      if(posicion[5]<posicion[3]){
                    posicion[5]=posicion[3];}
                 if(nodoactual.hijos.get(0).valor=="Sin Parametros"){
@@ -773,7 +805,7 @@ return posicion;
                     
                 }
                 else{
-                    int alto=100,ancho=15,alineado=SwingConstants.CENTER;
+                    int alto=Boton.getPreferredSize().height,ancho=Boton.getPreferredSize().width,alineado=SwingConstants.CENTER;
                     String id="",grupo="";
                     for (Nodo hijo : nodoactual.hijos.get(0).hijos.get(0).hijos) {
                         
@@ -945,7 +977,10 @@ return posicion;
                 
                 DefaultTableModel model=new DefaultTableModel();
              JTable tabla=new JTable(model);
-
+             posicion[2]=200; 
+                   posicion[3]=30;
+                     if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];}
              
           
              
@@ -1001,7 +1036,13 @@ return posicion;
                     tabla.setAlignmentX(alineado);
             tabla.setPreferredScrollableViewportSize(new Dimension(ancho,alto));                 
                  tabla.setPreferredSize(new Dimension(ancho, alto));
-                 }
+                
+                          posicion[2]=ancho; 
+                   posicion[3]=alto;
+                   if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];
+                   }
+                }
                 
                 
                 //Contenido de la tabla
@@ -1054,7 +1095,15 @@ return posicion;
                 jScrollPane1.setPreferredSize(tabla.getPreferredSize());
                 jScrollPane1.setViewportView(tabla);
 
-                
+                jScrollPane1.setBounds(posicion[0],posicion[1], posicion[2], posicion[3]);
+                    //  Objeto.setLocation(0,800);
+                    posicion[4]=posicion[0]+posicion[2];
+                   
+                    if (posicion[4]>html.getWidth()){
+                        
+                        html.setSize(posicion[4], posicion[5]);
+                    }
+               posicion[0]=posicion[4]+1;
                 html.add(jScrollPane1);
                 break;
                 
@@ -1063,7 +1112,10 @@ return posicion;
                spinner.setText(nodoactual.hijos.get(1).valor);
                 System.out.println(spinner.getText());
                 //parametros
-                
+                              posicion[2]=200; 
+                   posicion[3]=30;
+                     if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];}
                 if(nodoactual.hijos.get(0).valor=="Sin Parametros"){
                     // Objeto.setSize(100, 15);
                     spinner.setAlignmentX(SwingConstants.CENTER);
@@ -1112,7 +1164,11 @@ return posicion;
                     // Objeto.setSize(alto, ancho);
                     spinner.setAlignmentX(alineado);
                     spinner.setSize(alto, ancho);
-                 
+                             posicion[2]=ancho; 
+                   posicion[3]=alto;
+                   if(posicion[5]<posicion[3]){
+                   posicion[5]=posicion[3];
+                   }
                  
                     
                     //  Objeto.setLocation(posicion[0],posicion[1]);
@@ -1125,6 +1181,15 @@ return posicion;
                  spinner.setText(nodoactual.hijos.get(1).valor);
                  }
                
+               spinner.setBounds(posicion[0],posicion[1], posicion[2], posicion[3]);
+                    //  Objeto.setLocation(0,800);
+                    posicion[4]=posicion[0]+posicion[2];
+                   
+                    if (posicion[4]>html.getWidth()){
+                        
+                        html.setSize(posicion[4], posicion[5]);
+                    }
+               posicion[0]=posicion[4]+1;
                
                 
                  html.add(spinner);
