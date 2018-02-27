@@ -60,10 +60,10 @@ public class UsacWeb extends javax.swing.JFrame {
        jToolBar1.setLocation(0, 0);
       MostrarPagina.setPreferredSize(new Dimension(1192, 389));
     //  MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
-             pintar.setBackground(Color.white);
+            pintar.setBackground(Color.white);
     
-    // pintar.setLayout(new FlowLayout(FlowLayout.LEFT));
-        
+     pintar.setLayout(null);
+        pintar.setPreferredSize(new Dimension(1192, 389));
         añadirpintar.setBorder(BorderFactory.createLineBorder(Color.white));
         pintar.setBorder(BorderFactory.createLineBorder(Color.white));
     }
@@ -449,10 +449,11 @@ public class UsacWeb extends javax.swing.JFrame {
             int[] posicion=new int[6];
             posicion[0]=0;
             posicion[1]=0;
-            posicion[2]=MostrarPagina.getHeight();
-            posicion[3]=MostrarPagina.getHeight();
-            
-        //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista);    
+        
+        //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista); 
+        
+        
+                pintar.setSize(MostrarPagina.getWidth(),MostrarPagina.getHeight());
            posicion= g.Analizar(comp, pintar,Pestañas,lista,posicion);
 
             /*Iterator<String> nombreIterator = Cosas.iterator();
@@ -472,8 +473,7 @@ public class UsacWeb extends javax.swing.JFrame {
                
           añadirpintar.setViewportView(pintar);
           
-            pintar.setSize(posicion[2], posicion[3]);
-        
+       
          añadirpintar.setBounds(0, 0, pintar.getWidth(),pintar.getHeight());
         MostrarPagina.add(añadirpintar);
             //MostrarPagina.add(scrollPane);
