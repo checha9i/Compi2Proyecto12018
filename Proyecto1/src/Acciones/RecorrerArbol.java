@@ -6,8 +6,11 @@
 package Acciones;
 
 import Analizadores.Lexico;
+import Analizadores.LexicoCSS;
 import Analizadores.Nodo;
 import Analizadores.Sintactico;
+import Analizadores.SintacticoCSS;
+import Principal.LeerArchivo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -68,7 +71,7 @@ public Font subrayado = new Font("Arial", TextAttribute.UNDERLINE_ON, Font.BOLD)
                 posicion = this.recorrido(parser.raiz, cosas, pestaña, listacss, posicion);
             } catch (Exception e) {
             }
-JOptionPane.showMessageDialog(null, "Analisis Completo", "CHTML", 1);
+//JOptionPane.showMessageDialog(null, "Analisis Completo", "CHTML", 1);
 
         } catch (Exception ex) {
             Logger.getLogger(Compilador.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,8 +130,15 @@ return posicion;
                 break;
             case "CCSS":
               String urlcss=nodoactual.hijos.get(0).valor;
-              listacss = new ArrayList<ListaCSS>();
+                             LeerArchivo leer = new LeerArchivo();
+            String comp = leer.LeerArchivo(urlcss);
+         
+               AnalizarCCSS(comp,listacss);
+                       System.out.println("Se cargo a memoria el css");
+              
              
+              
+              
               
                 break;
             case "CJS":
@@ -192,19 +202,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                                //System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                               // System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                               // System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                               // System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -217,7 +227,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                              //  System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -241,9 +251,9 @@ return posicion;
                    }
                    
                    
-                System.out.println("Panel vacio "+nodoactual.hijos.get(1).valor);
+                //System.out.println("Panel vacio "+nodoactual.hijos.get(1).valor);
                 if(nodoactual.hijos.get(1).valor=="Vacio"){
-                      System.out.println("Panel vacio "+nodoactual.hijos.get(1).valor);
+                    //  System.out.println("Panel vacio "+nodoactual.hijos.get(1).valor);
                     panel.setBounds(posicion[0], posicion[1], posicion[2], posicion[3]);
                       
                     posicion[4]=posicion[0]+posicion[2];
@@ -270,7 +280,7 @@ return posicion;
                               posn[1]=0;
                                     
                         for (Nodo hijo : nodoactual.hijos.get(1).hijos.get(0).hijos) {
-                             System.out.println("Contenido Panel"+hijo.valor);
+                          //   System.out.println("Contenido Panel"+hijo.valor);
                           
                   this.recorrido(hijo, panel, pestaña, listacss,posn);
                                     
@@ -306,7 +316,7 @@ return posicion;
                 JScrollPane scroll = new JScrollPane (textarea);
                 
                 textarea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-                System.out.println("textarea"+textarea.getText());
+               // System.out.println("textarea"+textarea.getText());
                 //parametros
                 
                    posicion[2]=100; 
@@ -332,19 +342,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                               // System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                              //  System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                              //  System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                                //System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -357,7 +367,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                               //System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -426,19 +436,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                               // System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                                //System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                               // System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                              //  System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -451,7 +461,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                               // System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -481,19 +491,19 @@ return posicion;
                                 switch (hijo2.valor){
                                     case "alto":
                                         alto= Integer.parseInt(hijo2.hijos.get(0).valor);
-                                        System.out.println(alto);
+                                    //    System.out.println(alto);
                                         break;
                                     case "ancho":
                                         ancho= Integer.parseInt(hijo2.hijos.get(0).valor);
-                                        System.out.println(ancho);
+                                      //  System.out.println(ancho);
                                         break;
                                     case "id":
                                         id=hijo2.hijos.get(0).valor;
-                                        System.out.println(id);
+                                     //   System.out.println(id);
                                         break;
                                     case "grupo":
                                         grupo=hijo2.hijos.get(0).valor;
-                                        System.out.println(grupo);
+                                    //    System.out.println(grupo);
                                         break;
                                     case "alineado":
                                         String alig;
@@ -506,11 +516,11 @@ return posicion;
                                             alineado=SwingConstants.CENTER;
                                         }
                                         
-                                        System.out.println(alineado);
+                                     //   System.out.println(alineado);
                                         break;
                                     case "valor":
                                         String valor=hijo2.hijos.get(0).valor;
-                                        System.out.println(valor);
+                                     //   System.out.println(valor);
                                         break;
                                         
                                 }//fin switch
@@ -577,19 +587,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                              //  System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                               // System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                              //  System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                              //  System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -602,7 +612,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                            //    System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -640,7 +650,7 @@ return posicion;
                 
                 JLabel Objeto=new JLabel();
                 Objeto.setText(nodoactual.hijos.get(1).valor);
-                System.out.println(Objeto.getText());
+               // System.out.println(Objeto.getText());
                 //parametros
                      posicion[2]=100; 
                    posicion[3]=10;
@@ -662,19 +672,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                            //    System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                           //     System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                             //   System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                            //    System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -687,7 +697,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                            //    System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -740,19 +750,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                            //    System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                            //    System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                             //   System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                          //      System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -765,7 +775,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                            //    System.out.println(alineado);
                                 break;
                             case "ruta":
                                 ruta=hijo.hijos.get(0).valor;
@@ -800,7 +810,7 @@ return posicion;
                                 Objeto3.getWidth(),
                                 Objeto3.getHeight(),
                                 Image.SCALE_DEFAULT));
-                        System.out.println("Path imagen:"+path);
+                       // System.out.println("Path imagen:"+path);
                         Objeto3.setIcon(icono);
                     }
                     
@@ -833,7 +843,7 @@ return posicion;
             case "boton":
                 JButton Boton=new JButton();
                 Boton.setText(nodoactual.hijos.get(1).valor);
-                System.out.println(Boton.getText());
+              //  System.out.println(Boton.getText());
                 //parametros
                      posicion[2]=Boton.getPreferredSize().width; 
                    posicion[3]=Boton.getPreferredSize().height;
@@ -857,19 +867,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                         //       System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                            ////    System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                              //  System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                              //  System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -882,7 +892,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                           //      System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -940,19 +950,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                               // System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                               // System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                              //  System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                              //   System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -965,7 +975,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                       //          System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -1048,19 +1058,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                               //  System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                              //   System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                             //    System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                                 //ln(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -1073,7 +1083,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                             //    System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -1094,7 +1104,7 @@ return posicion;
                 if(nodoactual.hijos.get(1).valor!="Vacio"){
                     
                     if(nodoactual.hijos.get(1).hijos.get(0).valor!="fil_t"){
-                        System.out.println("Error en Tabla");
+                        //println("Error en Tabla");
                     }
                     for (Nodo hijo : nodoactual.hijos.get(1).hijos.get(0).hijos) {
                         if(hijo.hijos.get(0).valor=="Sin Parametros"){}
@@ -1113,7 +1123,7 @@ return posicion;
                                     break;
                                     default:
                                         
-                                        System.out.println("ERROR EN CONTENIDO DE LA TABLA");
+                                    //    System.out.println("ERROR EN CONTENIDO DE LA TABLA");
                                 }
                                 
                                 
@@ -1157,7 +1167,7 @@ return posicion;
             case "spinner":
                 JTextField spinner=new JTextField(5);
                spinner.setText(nodoactual.hijos.get(1).valor);
-                System.out.println(spinner.getText());
+                // System.out.println(spinner.getText());
                 //parametros
                               posicion[2]=200; 
                    posicion[3]=30;
@@ -1178,19 +1188,19 @@ return posicion;
                         switch (hijo.valor){
                             case "alto":
                                 alto= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(alto);
+                              //   System.out.println(alto);
                                 break;
                             case "ancho":
                                 ancho= Integer.parseInt(hijo.hijos.get(0).valor);
-                                System.out.println(ancho);
+                              //   System.out.println(ancho);
                                 break;
                             case "id":
                                 id=hijo.hijos.get(0).valor;
-                                System.out.println(id);
+                              //  System.out.println(id);
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
-                                System.out.println(grupo);
+                              //  System.out.println(grupo);
                                 break;
                             case "alineado":
                                 String alig;
@@ -1203,7 +1213,7 @@ return posicion;
                                     alineado=SwingConstants.CENTER;
                                 }
                                 
-                                System.out.println(alineado);
+                               // System.out.println(alineado);
                                 break;
                                 
                         }//fin switch
@@ -1262,28 +1272,148 @@ return posicion;
   }
 
     
+  public  int inde;
     
-public void GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista,int indexcss){
-switch(nodoactual.valor){
-    case "Estilo":
-        for (Nodo hijo : nodoactual.hijos) {
-            for (Nodo hijo2 : hijo.hijos.get(0).hijos) {
-          System.out.println(hijo2.valor);     
-          
-          
+public int GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
+
+    
+    if(lista.isEmpty()){
+    inde=0;
+    }
+    
+            
+    switch(nodoactual.valor){
+        case "Estilos":
+            for (Nodo hijo : nodoactual.hijos) {
                 
-            }        
+                  this.GuardarCSS(hijo.hijos.get(0), lista);
+            }
+            break;
+            
+        case "ElementoOGrupo":
+          
+            for (Nodo hijo : nodoactual.hijos) {
+                
+                inde=this.GuardarCSS(hijo, lista);
+                
+            }
+            break;
+            
+        case "ID":
+
+            ListaCSS css=new ListaCSS(inde);
             
             
-        }
-        
-        break;
+            css.index=inde;
+            css.ID=nodoactual.hijos.get(0).valor;
+                      
+            
+            for (Nodo ncss : nodoactual.hijos.get(0).hijos.get(0).hijos) {
+                
+                switch(ncss.valor){
+                    case "formato":
+                        for (Nodo formato: ncss.hijos.get(0).hijos.get(0).hijos) {
+                            css.formato+=","+formato.valor;
+                        }
+                        break;
+                    case "letra":
+                        css.letra=ncss.hijos.get(0).valor;
+                        break;
+                    case "tamtex":
+                        css.tamtext=Integer.parseInt(ncss.hijos.get(0).valor);
+                        break;
+                }
+                
+            }
+            lista.add(css);
+           inde+=1;
+            
+            break;
+            
+        case "Grupo":
+            
+
+                  ListaCSS css2=new ListaCSS(inde);
+            css2.index=inde;
+            css2.GRUPO=nodoactual.hijos.get(0).valor;
+            
+            for (Nodo ncss : nodoactual.hijos.get(0).hijos.get(0).hijos) {
+                
+                switch(ncss.valor){
+                    case "formato":
+                        for (Nodo formato: ncss.hijos.get(0).hijos.get(0).hijos) {
+                            css2.formato+=","+formato;
+                        }
+                        break;
+                    case "letra":
+                        css2.letra=ncss.hijos.get(0).valor;
+                        break;
+                    case "tamtex":
+                        css2.tamtext=Integer.parseInt(ncss.hijos.get(0).valor);
+                        break;
+                }
+                
+            }
+            
+           lista.add(css2);
+            
+      inde+=1;
+            break;
+            
+            
+        default:
+    }
     
-    default:
+  return inde;
 }
 
-}
+public void AnalizarCCSS(String url,ArrayList<ListaCSS> lista){
     
+ int index=0;
+  try 
+        {
+            
+
+            //crear el lexico
+            LexicoCSS lexico = new LexicoCSS(new StringReader(url));
+            //crear el sintactico
+            SintacticoCSS parser = new SintacticoCSS(lexico);
+            
+            //ejecutar el analisis
+            parser.parse();
+                                    
+          //  JOptionPane.showMessageDialog(null, "Analisis Completo","Ejemplo 1 AST",1);
+            
+            //Graficar
+            //this.graficarAST(parser.raiz);            
+            GraficadorCSS g = new GraficadorCSS();
+         //  g.graficarAST(parser.raiz);
+            
+            //Recorrido
+            GuardarCSS(parser.raiz,lista);
+            MemoriaCSS(lista);
+        } 
+        catch (Exception ex) 
+        {
+            Logger.getLogger(CompiladorCSS.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un grave problema","Ejemplo 1 AST",2);
+        }   
+
+     
+}
+
+public void MemoriaCSS(ArrayList<ListaCSS> lista){
+    if(!lista.isEmpty()){
+        
+        for(int i=0;i<lista.size();i++){
+            System.out.println("index: "+lista.get(i).index);
+            
+        }
+    }
+    
+}
+
+
 }
 
 

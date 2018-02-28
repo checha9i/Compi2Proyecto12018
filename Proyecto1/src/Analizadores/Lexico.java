@@ -1048,7 +1048,7 @@ public class Lexico implements java_cup.runtime.Scanner {
           }
         case 96: break;
         case 27: 
-          { System.out.println("chtml"); return new Symbol(Simbolos.chtml, yycolumn, yyline, new String(yytext()));
+          { return new Symbol(Simbolos.chtml, yycolumn, yyline, new String(yytext()));
           }
         case 97: break;
         case 28: 
@@ -1088,7 +1088,7 @@ public class Lexico implements java_cup.runtime.Scanner {
           }
         case 106: break;
         case 37: 
-          { System.out.println("Cuerpo"); return new Symbol(Simbolos.cuerpo, yycolumn, yyline, new String(yytext()));
+          { return new Symbol(Simbolos.cuerpo, yycolumn, yyline, new String(yytext()));
           }
         case 107: break;
         case 38: 
@@ -1204,7 +1204,7 @@ public class Lexico implements java_cup.runtime.Scanner {
           }
         case 135: break;
         case 66: 
-          { System.out.println("encabezado"); return new Symbol(Simbolos.encabezado, yycolumn, yyline, new String(yytext()));
+          { return new Symbol(Simbolos.encabezado, yycolumn, yyline, new String(yytext()));
           }
         case 136: break;
         case 67: 

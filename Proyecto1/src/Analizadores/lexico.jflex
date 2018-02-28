@@ -76,11 +76,11 @@ string = "\""~"\""
 //// RESERVADAS
 
 //etiquetas sin atributos css
-"chtml" {System.out.println("chtml"); return new Symbol(Simbolos.chtml, yycolumn, yyline, new String(yytext())); }
+"chtml" { return new Symbol(Simbolos.chtml, yycolumn, yyline, new String(yytext())); }
 "fin-chtml" { return new Symbol(Simbolos.finchtml, yycolumn, yyline, new String(yytext())); }
-"encabezado" {System.out.println("encabezado"); return new Symbol(Simbolos.encabezado, yycolumn, yyline, new String(yytext())); }
+"encabezado" { return new Symbol(Simbolos.encabezado, yycolumn, yyline, new String(yytext())); }
 "fin-encabezado" { return new Symbol(Simbolos.finencabezado, yycolumn, yyline, new String(yytext())); }
-"cuerpo" {System.out.println("Cuerpo"); return new Symbol(Simbolos.cuerpo, yycolumn, yyline, new String(yytext())); }
+"cuerpo" { return new Symbol(Simbolos.cuerpo, yycolumn, yyline, new String(yytext())); }
 "fin-cuerpo" { return new Symbol(Simbolos.fincuerpo, yycolumn, yyline, new String(yytext())); }
 "titulo" { return new Symbol(Simbolos.titulo, yycolumn, yyline, new String(yytext())); }
 "fin-titulo" { return new Symbol(Simbolos.fintitulo, yycolumn, yyline, new String(yytext())); }

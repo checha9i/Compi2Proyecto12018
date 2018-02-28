@@ -28,7 +28,7 @@ public class ListaCSS {
    public String letra;
    public Boolean opaque;
    public int tamtext;
-   public int[] tamelemento;
+   public int[] tamelemento=new int[2];
    public String texto;
    public Boolean visible;
    

@@ -35,8 +35,7 @@ frame1.setMinimumSize(new Dimension(800, 600));
 
                      frame1.setVisible(true); 
 
-                     Home h=new Home();
-                     h.setVisible(true);
+                      
       
     }
     

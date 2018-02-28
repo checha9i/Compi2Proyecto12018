@@ -278,8 +278,9 @@ TVal::=TVal:tv mas valDecimal:val
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-double res = pnum+snum;
+int res =     (int) Math.floor((pnum+snum)+0.5);
 tv.valor=String.valueOf(res);
+
 RESULT = tv;
 
 :}
@@ -288,8 +289,9 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-double res = pnum*snum;
+int res =     (int) Math.floor((pnum*snum)+0.5);
 tv.valor=String.valueOf(res);
+
 RESULT = tv;
 
 :}
@@ -298,8 +300,9 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-double res = pnum/snum;
+int res =     (int) Math.floor((pnum/snum)+0.5);
 tv.valor=String.valueOf(res);
+
 RESULT = tv;
 
 :}
@@ -308,8 +311,9 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-double res = pnum-snum;
+int res =     (int) Math.floor((pnum-snum)+0.5);
 tv.valor=String.valueOf(res);
+
 RESULT = tv;
 
 :}
