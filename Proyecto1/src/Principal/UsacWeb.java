@@ -429,70 +429,70 @@ public class UsacWeb extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
  
         
- if(historial.isEmpty()){
- conthist=0;
- }else{
- conthist+=1;
- }
- Historial newhist=new Historial();
- 
- 
-      MostrarPagina.repaint();
-
-pintar.removeAll();
-          pintar.repaint();
-        
-         
-        String entrada = "C:\\HTMLEntrada.txt";
- newhist.Historial(conthist, entrada);       
- historial.add(newhist);
-        LeerArchivo leer = new LeerArchivo();
-        String comp = leer.LeerArchivo(entrada);
-
-        RecorrerArbol g = new RecorrerArbol();
-
-        Lexico lexico = new Lexico(new StringReader(comp));
-        //crear el sintactico
-        Sintactico parser = new Sintactico(lexico);
         try {
-            parser.parse();
-            System.out.println("Total: " + g.tamañoarbol(1, parser.raiz));
+            if (historial.isEmpty()) {
+                conthist = 0;
+            } else {
+                conthist += 1;
+            }
+            Historial newhist = new Historial();
+            
+            MostrarPagina.repaint();
+            
+            pintar.removeAll();
+            pintar.repaint();
+            
+            MostrarPagina.removeAll();
+            String entrada = "C:\\HTMLEntrada.txt";
+            newhist.Historial(conthist, entrada);            
+            historial.add(newhist);
+            LeerArchivo leer = new LeerArchivo();
+            String comp = leer.LeerArchivo(entrada);
+            
+            RecorrerArbol g = new RecorrerArbol();
+            
+            Lexico lexico = new Lexico(new StringReader(comp));
+            //crear el sintactico
+            Sintactico parser = new Sintactico(lexico);
+            try {
+                parser.parse();
+                System.out.println("Total: " + g.tamañoarbol(1, parser.raiz));
+                
+                int[] posicion = new int[6];
+                posicion[0] = 0;
+                posicion[1] = 0;
 
-            int[] posicion=new int[6];
-            posicion[0]=0;
-            posicion[1]=0;
-        
-        //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista); 
-        
-        
-                pintar.setSize(MostrarPagina.getWidth(),MostrarPagina.getHeight());
-           posicion= g.Analizar(comp, pintar,Pestañas,lista,posicion);
+                //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista); 
+                pintar.setSize(MostrarPagina.getWidth(), MostrarPagina.getHeight());
+                posicion = g.Analizar(comp, pintar, Pestañas, lista, posicion);
+                
+                pintar.setPreferredSize(new Dimension(posicion[4], posicion[5]));
+                pintar.repaint();
 
-            /*Iterator<String> nombreIterator = Cosas.iterator();
+                /*Iterator<String> nombreIterator = Cosas.iterator();
             while (nombreIterator.hasNext()) {
                 String elemento = nombreIterator.next();
                 System.out.print(elemento + "\n");
             }*/
-        añadirpintar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        añadirpintar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-      //  scrollPane.setBounds(0,0,MostrarPagina.getPreferredSize());
-      //  scrollPane.setBounds(new Rectangle(MostrarPagina.getPreferredSize()));
-        
-        
-        añadirpintar.setBackground(Color.WHITE);
+                añadirpintar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                añadirpintar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                //  scrollPane.setBounds(0,0,MostrarPagina.getPreferredSize());
+                //  scrollPane.setBounds(new Rectangle(MostrarPagina.getPreferredSize()));
+                
+                añadirpintar.setBackground(Color.WHITE);
                 añadirpintar.setPreferredSize(MostrarPagina.getSize());
-               
-               
-          añadirpintar.setViewportView(pintar);
-          
-       
-         añadirpintar.setBounds(0, 0, pintar.getWidth(),pintar.getHeight());
-        MostrarPagina.add(añadirpintar);
-            //MostrarPagina.add(scrollPane);
-            
-            //System.out.println(Cosas.size());
-        } catch (Exception ex) {
-            Logger.getLogger(UsacWeb.class.getName()).log(Level.SEVERE, null, ex);
+                
+                añadirpintar.setViewportView(pintar);
+                
+                añadirpintar.setBounds(0, 0, pintar.getWidth(), pintar.getHeight());
+                MostrarPagina.add(añadirpintar);
+                //MostrarPagina.add(scrollPane);
+
+                //System.out.println(Cosas.size());
+            } catch (Exception ex) {
+                Logger.getLogger(UsacWeb.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception e) {
         }
 
         
