@@ -178,34 +178,13 @@ etiqueta ::= alineado:al  dosPuntos asignar TAlineado:conal puntoComa  {:
       cuerpo.hijos.add(Tval);
         RESULT = cuerpo;
 :}
- | tamelemento:tam dosPuntos asignar corchL TVal:val1 coma TVal:val2 corchR puntoComa {:
-      Nodo cuerpo = new Nodo("tamelemento",tamleft,tamright);
-
-      cuerpo.hijos.add(val1);
-      cuerpo.hijos.add(val2);
-        RESULT = cuerpo;
-:}
  | fondoelemento:fe dosPuntos asignar ConcatCad:val puntoComa {:
       Nodo cuerpo = new Nodo("fondoelemento",feleft,feright);
         cuerpo.hijos.add(val);
         RESULT = cuerpo;
 :}
- | selecttextcolor:set dosPuntos asignar ConcatCad:val puntoComa {:
-      Nodo cuerpo = new Nodo("selecttextcolor",setleft,setright);
-        cuerpo.hijos.add(val);
-        RESULT = cuerpo;
-:}
- | colorselect:cos dosPuntos asignar ConcatCad:val puntoComa {:
-      Nodo cuerpo = new Nodo("colorselect",cosleft,cosright);
-        cuerpo.hijos.add(val);
-        RESULT = cuerpo;
-:}
- | idelemento:ide dosPuntos asignar identificador:op puntoComa {:
-      Nodo cuerpo = new Nodo("idelemento",ideleft,ideright);
-        Nodo iden = new Nodo(op.toString(),opleft,opright);
-        cuerpo.hijos.add(iden);
-        RESULT = cuerpo;
-:}
+ 
+
  | autoredimension:are dosPuntos asignar corchL ValBool:bo coma Direccion:di corchR puntoComa {:
       Nodo cuerpo = new Nodo("autoredimension",areleft,areright);
         
@@ -278,7 +257,7 @@ TVal::=TVal:tv mas valDecimal:val
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-int res =     (int) Math.floor((pnum+snum)+0.5);
+int res =     (int) Math.round((pnum+snum));
 tv.valor=String.valueOf(res);
 
 RESULT = tv;
@@ -289,7 +268,7 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-int res =     (int) Math.floor((pnum*snum)+0.5);
+int res =     (int) Math.round((pnum*snum));
 tv.valor=String.valueOf(res);
 
 RESULT = tv;
@@ -300,7 +279,7 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-int res =     (int) Math.floor((pnum/snum)+0.5);
+int res =     (int) Math.round((pnum/snum));
 tv.valor=String.valueOf(res);
 
 RESULT = tv;
@@ -311,7 +290,7 @@ RESULT = tv;
 
 double pnum = Double.parseDouble(tv.valor);
 double snum = Double.parseDouble(val.toString());
-int res =     (int) Math.floor((pnum-snum)+0.5);
+int res =     (int) Math.round((pnum-snum));
 tv.valor=String.valueOf(res);
 
 RESULT = tv;

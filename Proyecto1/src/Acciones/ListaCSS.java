@@ -5,7 +5,9 @@
  */
 package Acciones;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 
 
 /**
@@ -16,34 +18,34 @@ public class ListaCSS {
    public int index;
    public String ID;
    public String GRUPO;
-   
    public String alineado;
-   public String autoredimension;
-   public String borde; 
-   public String colorselect;
-   public String colortext;
-   public String fondoelemento;
+   public boolean autoredimension;
+   public String DirRedimension;
+   public Color  ColorBorde; 
+   public int ThicknessBorde;
+   public boolean curveBorde;
+   public Color colortext;
+   public Color fondoelemento;
    public String formato;
-   public String idelemento;
    public String letra;
    public Boolean opaque;
    public int tamtext;
-   public int[] tamelemento=new int[2];
    public String texto;
    public Boolean visible;
    
     
     public ListaCSS(int index){
     this.index=index;
-   this.ID="";
+  
+    /* this.ID="";
    this.GRUPO="";
-   
+  this.fondoelemento=Color.lightGray;
+    
    this.alineado="";
    this.autoredimension="";
    this.borde=""; 
    this.colorselect="";
    this.colortext="";
-   this.fondoelemento="";
    this.formato="";
    this.idelemento="";
    this.letra="";
@@ -53,7 +55,7 @@ public class ListaCSS {
    this.tamelemento[1]=5;
    this.texto="";
    this.visible=true;
-        
+   */     
 }
 
    
