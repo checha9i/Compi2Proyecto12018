@@ -33,7 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.LineBorder;
+
 
 /**
  *
@@ -48,7 +48,7 @@ public class UsacWeb extends javax.swing.JFrame {
     JPanel pintar=new JPanel();
     
       JScrollPane añadirpintar=new JScrollPane();
-    ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
+   public  ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
     ArrayList<Historial> historial=new ArrayList<Historial>();  
      public int conthist;
       
@@ -61,7 +61,7 @@ public class UsacWeb extends javax.swing.JFrame {
        jToolBar1.setLocation(0, 0);
       MostrarPagina.setPreferredSize(new Dimension(1192, 389));
     //  MostrarPagina.setLayout(new FlowLayout(FlowLayout.LEFT));
-            pintar.setBackground(Color.white);
+           pintar.setBackground(Color.white);
     
      pintar.setLayout(null);
         pintar.setPreferredSize(new Dimension(1192, 389));
@@ -465,7 +465,7 @@ public class UsacWeb extends javax.swing.JFrame {
                 //g.Analizar(comp, MostrarPagina, (JTabbedPane) this.getParent(),lista); 
                 pintar.setSize(MostrarPagina.getWidth(), MostrarPagina.getHeight());
                 posicion = g.Analizar(comp, pintar, Pestañas, lista, posicion);
-                
+                 // MemoriaCSS(lista);
                 pintar.setPreferredSize(new Dimension(posicion[4], posicion[5]));
                 pintar.repaint();
 
@@ -479,7 +479,7 @@ public class UsacWeb extends javax.swing.JFrame {
                 //  scrollPane.setBounds(0,0,MostrarPagina.getPreferredSize());
                 //  scrollPane.setBounds(new Rectangle(MostrarPagina.getPreferredSize()));
                 
-                añadirpintar.setBackground(Color.WHITE);
+                //añadirpintar.setBackground(Color.WHITE);
                 añadirpintar.setPreferredSize(MostrarPagina.getSize());
                 
                 añadirpintar.setViewportView(pintar);
@@ -487,8 +487,9 @@ public class UsacWeb extends javax.swing.JFrame {
                 añadirpintar.setBounds(0, 0, pintar.getWidth(), pintar.getHeight());
                 MostrarPagina.add(añadirpintar);
                 //MostrarPagina.add(scrollPane);
-
-                //System.out.println(Cosas.size());
+                 //MemoriaCSS(lista);
+               
+                 //System.out.println(Cosas.size());
             } catch (Exception ex) {
                 Logger.getLogger(UsacWeb.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -507,7 +508,29 @@ public class UsacWeb extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
-
+public void MemoriaCSS(ArrayList<ListaCSS> lista){
+    if(!lista.isEmpty()){
+        
+        for(int i=0;i<lista.size();i++){
+            System.out.println("index: "+lista.get(i).index);
+            System.out.println("Grupo: "+lista.get(i).GRUPO);
+            System.out.println("ID: "+lista.get(i).ID);
+            System.out.println("Alineado: "+lista.get(i).alineado);
+            System.out.println("AutoRedimension: ["+lista.get(i).autoredimension+","+lista.get(i).DirRedimension+"]");
+            System.out.println("Borde: ["+lista.get(i).ColorBorde+","+lista.get(i).ThicknessBorde+","+lista.get(i).curveBorde+"]");
+            System.out.println("ColorText: "+lista.get(i).colortext);
+            System.out.println("FondoElemento: "+lista.get(i).fondoelemento);
+            System.out.println("Formato: "+lista.get(i).formato);
+            System.out.println("Letra: "+lista.get(i).letra);
+            System.out.println("Opaque: "+lista.get(i).opaque);
+            System.out.println("TamText: "+lista.get(i).tamtext);
+            System.out.println("Texto: "+lista.get(i).texto);
+            System.out.println("Visible: "+lista.get(i).visible);
+            System.out.println("FinID");
+        }
+    }
+    
+}
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed

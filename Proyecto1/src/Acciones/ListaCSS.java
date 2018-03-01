@@ -26,7 +26,7 @@ public class ListaCSS {
    public boolean curveBorde;
    public Color colortext;
    public Color fondoelemento;
-   public String formato;
+   public String[] formato;
    public String letra;
    public Boolean opaque;
    public int tamtext;
@@ -36,26 +36,23 @@ public class ListaCSS {
     
     public ListaCSS(int index){
     this.index=index;
-  
-    /* this.ID="";
+  this.autoredimension=false;
+  this.DirRedimension="Vertical";
+    this.ID="";
    this.GRUPO="";
   this.fondoelemento=Color.lightGray;
-    
    this.alineado="";
-   this.autoredimension="";
-   this.borde=""; 
-   this.colorselect="";
-   this.colortext="";
-   this.formato="";
-   this.idelemento="";
-   this.letra="";
-   this.opaque=false;
+   this.ColorBorde=Color.black;
+   this.ThicknessBorde=1;
+   this.curveBorde=false;
+   this.colortext=Color.black;
+   
+   this.letra="Arial";
+   this.opaque=true;
    this.tamtext=5;
-   this.tamelemento[0]=5;
-   this.tamelemento[1]=5;
    this.texto="";
    this.visible=true;
-   */     
+       
 }
 
    
