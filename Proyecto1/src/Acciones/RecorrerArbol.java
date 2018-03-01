@@ -14,9 +14,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
+import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Map;
@@ -162,10 +165,7 @@ return posicion;
                 
             case "saltofin":
                 
-
-                         
-                       
-                           posicion[1]=posicion[5]+1;
+                   posicion[1]=posicion[5]+1;
                           posicion[0]=0;
                                if(posicion[5]>posicion[1]){
                    posicion[5]=posicion[1];
@@ -175,7 +175,7 @@ return posicion;
                 
                  JPanel panel=new JPanel();
                
-      panel.setLayout(new FlowLayout(FlowLayout.LEFT));                 
+      //panel.setLayout(new FlowLayout(FlowLayout.LEFT));                 
 //parametros
                        posicion[2]=50; 
                    posicion[3]=50;
@@ -870,13 +870,26 @@ return posicion;
                     if (nodoactual.hijos.get(1).valor!="Vacio"){
                         String path = nodoactual.hijos.get(1).valor;
                         Objeto3.setMaximumSize(new Dimension(alto,ancho));
-                        ImageIcon imagen = new ImageIcon(path);
-                        Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(
+                        File f = new File(path);
+                if(f.exists() && !f.isDirectory()) { 
+                        Image imagen = new ImageIcon(path).getImage();
+                   
+                                   Icon icono = new ImageIcon(imagen.getScaledInstance(
                                 Objeto3.getWidth(),
                                 Objeto3.getHeight(),
                                 Image.SCALE_DEFAULT));
+    Objeto3.setIcon(icono);
+                }else{
+                        Image imagen = new ImageIcon("C:\\Users\\chech\\OneDrive\\Documentos\\GitHub\\Compi2Proyecto12018\\Proyecto1\\src\\Iconos\\ImagenNoEncontrada.png").getImage();
+                                   Icon icono = new ImageIcon(imagen.getScaledInstance(
+                                Objeto3.getWidth(),
+                                Objeto3.getHeight(),
+                                Image.SCALE_DEFAULT));
+    Objeto3.setIcon(icono);
+                }
+                
                        // System.out.println("Path imagen:"+path);
-                        Objeto3.setIcon(icono);
+                        
                     }
                     
                     
@@ -1260,6 +1273,7 @@ return posicion;
                spinner.setText(nodoactual.hijos.get(1).valor);
                 // System.out.println(spinner.getText());
                 //parametros
+
                               posicion[2]=200; 
                    posicion[3]=30;
                      if(posicion[5]<(posicion[1]+posicion[3])){
@@ -1323,7 +1337,7 @@ return posicion;
                    posicion[5]=(posicion[1]+posicion[3]);
                    } 
                  if(nodoactual.hijos.get(1).valor=="Vacio"){
-                 spinner.setText("   ");
+                               spinner.setText("0");
                  }
                  else{
                  spinner.setText(nodoactual.hijos.get(1).valor);
@@ -1339,7 +1353,16 @@ return posicion;
                     }
                posicion[0]=posicion[4]+1;
                
-                
+                spinner.addKeyListener(new KeyAdapter() {
+public void keyTyped(KeyEvent evt) {
+int k=(int)evt.getKeyChar();
+if (!(k >= 48 && k <= 57)){
+evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+}
+}
+
+        });
                  html.add(spinner);
                 break;
            

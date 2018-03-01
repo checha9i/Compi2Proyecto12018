@@ -41,7 +41,7 @@ public class ListaCSS {
     this.ID="";
    this.GRUPO="";
   this.fondoelemento=Color.lightGray;
-   this.alineado="";
+   this.alineado="justificado";
    this.ColorBorde=Color.black;
    this.ThicknessBorde=1;
    this.curveBorde=false;

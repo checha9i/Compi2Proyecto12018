@@ -9,6 +9,7 @@ import Analizadores.LexicoCSS;
 import Analizadores.Nodo;
 import Analizadores.SintacticoCSS;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.StringReader;
@@ -84,6 +85,9 @@ public int GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
                         break;
                     case "tamtex":
                         css.tamtext=(int) Math.round(Double.parseDouble(ncss.hijos.get(0).valor));
+                        if (css.tamtext<5){
+                        css.tamtext=5;
+                        }
                         break;
                     case "Alineado":
                         css.alineado=ncss.hijos.get(0).valor;
@@ -173,7 +177,11 @@ public int GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
                         }
                         break;
                     case "tamtex":
+                        
                         css2.tamtext=(int) Math.round(Double.parseDouble(ncss.hijos.get(0).valor));
+                        if (css2.tamtext<5){
+                        css2.tamtext=5;
+                        }
                         break;
                     case "Alineado":
                         css2.alineado=ncss.hijos.get(0).valor;
@@ -464,6 +472,18 @@ public void MemoriaCSS(ArrayList<ListaCSS> lista){
     label.setFont(new Font(lista.get(index).letra, Font.BOLD, lista.get(index).tamtext));
     label.setVisible(lista.get(index).visible);
     label.setOpaque(lista.get(index).opaque);
+    if(lista.get(index).alineado.compareTo("izquierda")==0){
+    label.setLayout(new FlowLayout(FlowLayout.LEFT));
+    }
+    else if(lista.get(index).alineado.compareTo("derecha")==0){
+    label.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    }
+    else if(lista.get(index).alineado.compareTo("centrado")==0){
+    label.setLayout(new FlowLayout(FlowLayout.CENTER));
+    }else {
+    label.setLayout(new FlowLayout(FlowLayout.LEADING));
+    }
+    
     
     label.setForeground(lista.get(index).colortext);
     label.repaint();
