@@ -23,17 +23,17 @@ public class Principal {
     public static void main(String[] args) 
     {
           
-    /*    Home h = new Home();
+      Home h = new Home();
         h.setVisible(true);
-  */
-                    UsacWeb frame1 = new UsacWeb();
-             
-                     frame1.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-frame1.setMinimumSize(new Dimension(800, 600)); 
-
-
-                     frame1.setVisible(true); 
+  
+            UsacWeb frame1 = new UsacWeb();
+        
+        frame1.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        frame1.setMinimumSize(new Dimension(800, 600));
+        
+        
+        frame1.setVisible(true); 
 
                       
       

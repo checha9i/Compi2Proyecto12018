@@ -1,6 +1,7 @@
 package Principal;
 
 import Acciones.Compilador;
+import Acciones.CompiladorCJS;
 import Acciones.CompiladorCSS;
 import java.io.BufferedReader;
 import java.io.File;
@@ -149,7 +150,12 @@ public class Home extends javax.swing.JFrame
         menuEjecutar.add(ianalizar1);
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/kt-start.png"))); // NOI18N
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setText("CJS");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         menuEjecutar.add(jMenuItem1);
 
         barraMenu.add(menuEjecutar);
@@ -310,6 +316,17 @@ public class Home extends javax.swing.JFrame
     private void ianalizar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ianalizar3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ianalizar3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+if(txtentrada.getText().length()!=0 || !txtentrada.getText().equals(""))
+        {
+            CompiladorCJS c = new CompiladorCJS();
+            c.Analizar(this.txtentrada.getText(),this.txtsalida);
+          
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
         
           
     

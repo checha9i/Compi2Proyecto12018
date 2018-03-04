@@ -16,6 +16,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.List;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,6 +27,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -51,7 +53,7 @@ public class UsacWeb extends javax.swing.JFrame {
    public  ArrayList<ListaCSS> lista=new ArrayList<ListaCSS>();
     ArrayList<Historial> historial=new ArrayList<Historial>();  
      public int conthist;
-      
+     
     public UsacWeb() {
      
    
@@ -131,6 +133,11 @@ public class UsacWeb extends javax.swing.JFrame {
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton1);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/avanzar.png"))); // NOI18N
@@ -428,7 +435,7 @@ public class UsacWeb extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
  
-        
+
         try {
             if (historial.isEmpty()) {
                 conthist = 0;
@@ -508,29 +515,7 @@ public class UsacWeb extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
-public void MemoriaCSS(ArrayList<ListaCSS> lista){
-    if(!lista.isEmpty()){
-        
-        for(int i=0;i<lista.size();i++){
-            System.out.println("index: "+lista.get(i).index);
-            System.out.println("Grupo: "+lista.get(i).GRUPO);
-            System.out.println("ID: "+lista.get(i).ID);
-            System.out.println("Alineado: "+lista.get(i).alineado);
-            System.out.println("AutoRedimension: ["+lista.get(i).autoredimension+","+lista.get(i).DirRedimension+"]");
-            System.out.println("Borde: ["+lista.get(i).ColorBorde+","+lista.get(i).ThicknessBorde+","+lista.get(i).curveBorde+"]");
-            System.out.println("ColorText: "+lista.get(i).colortext);
-            System.out.println("FondoElemento: "+lista.get(i).fondoelemento);
-            System.out.println("Formato: "+lista.get(i).formato);
-            System.out.println("Letra: "+lista.get(i).letra);
-            System.out.println("Opaque: "+lista.get(i).opaque);
-            System.out.println("TamText: "+lista.get(i).tamtext);
-            System.out.println("Texto: "+lista.get(i).texto);
-            System.out.println("Visible: "+lista.get(i).visible);
-            System.out.println("FinID");
-        }
-    }
-    
-}
+
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -565,6 +550,12 @@ for(int i=0;i<=historial.size()-1;i++){
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

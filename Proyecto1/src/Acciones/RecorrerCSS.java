@@ -422,6 +422,14 @@ public void MemoriaCSS(ArrayList<ListaCSS> lista){
     label.setForeground(lista.get(index).colortext);
     
     }
+     public void cssimagen(JLabel label,ArrayList<ListaCSS> lista,int index){
+    
+    
+    
+    label.setVisible(lista.get(index).visible);
+
+    
+    }
     
        public void cssboton(JButton label,ArrayList<ListaCSS> lista,int index){
     label.setBorder(BorderFactory.createLineBorder(lista.get(index).ColorBorde, lista.get(index).ThicknessBorde, lista.get(index).curveBorde));

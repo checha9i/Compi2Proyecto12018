@@ -1,0 +1,529 @@
+package Analizadores;
+import java_cup.runtime.Symbol;
+
+//-------------------> Codigo para el parser, variables, metodos
+parser code
+{:      
+    public Nodo raiz;
+
+    //-------------------> Metodo al que se llama automaticamente ante algun error sintactico.
+    public void syntax_error(Symbol s)
+    {        
+        System.out.println("Error Sintactico Recuperado /////// lexema: " +s.value+ " Fila: " +s.right+ " Columna: "+s.left);       
+    }
+
+
+    //-------------------> Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        System.out.println("Error Sintactico Panico ////// Lexema: " +s.value+" Fila: "+s.right+ " Columna: "+s.left);        
+    }
+
+
+    public void semantic(Symbol cur_token, String n) 
+    {
+        System.out.println("error semantico ");
+    }
+
+
+    public void semantic(String msg, Object obj) {}
+
+:}
+
+
+//-------------------> Codigo para las acciones gramaticales
+action code
+{:
+:}  
+
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Declaraciones
+----------------------------------------------------------------------------*/
+
+
+terminal String valEntero, valDecimal, valCaracter, valCadena, verdadero,asignar, falso, identificador, privado, publico, protegido, mas, menos, por, div, potencia, or, and, xor, not, mayor, menor, 
+mayorIgual, menorIgual, igual, distinto, puntoComa,obtener,detener,setelemento,observador,mensaje,documento,retornar,
+aumento, disminucion, var, entero, decimal, inicio,imprimir,funcion, datos, columna, procesar, donde, dondecada, dondetodo, si, sino, seleccion, caso, defecto, 
+para, mientras, hacer, continuar, terminar, parL, parR, corchL, corchR, llaveR, llaveL, coma, dosPuntos, punto,stringcad;
+
+nonterminal Nodo INICIAL, S, finVar,
+L_IMPORTACION, IMPORTACION, L_CUERPO, CUERPO, Sentencias, SENTENCIA, METODO, ATRIBUTO,
+PRINCIPAL, TIPO, TIPO_FUNCION, L_PARAMETRO, L_PARAMETRO_LLAMADA, L_ID, IMPRIMIR, LOGICA, RELACIONAL, ARITMETICA, L_DIMENSION, L_GRUPO,
+LLAMADA, SI, SINO, SELECCIONA, PARA, MIENTRAS, L_CASO, CASO, L_ATRIBUTO, ACCESO_ALS, ATRIBUTO_ACCESO, RETORNAR, VARIABLE, DEFECTO, HACER, L_EXPRESION, GRAPHIKAR,
+DONDE, DONDETODO, DONDECADA, SENTENCIA_DATO, DATO;
+precedence left mas, menos;
+precedence left por, div; 
+precedence right potencia; 
+precedence right aumento, disminucion;
+precedence nonassoc igual, distinto, mayor, menor, mayorIgual, menorIgual;
+precedence left or;
+precedence left xor;
+precedence left and;
+precedence right not;
+
+start with INICIAL;
+
+/*----------------------------------------------------------------------------
+----------------------------------------- Area de Gramatica
+----------------------------------------------------------------------------*/
+INICIAL::= S:raiz
+        {:
+            parser.raiz=raiz;
+        :}
+    | error INICIAL
+    | ;
+
+S::=  S:op Sentencias:ne 
+    {:
+
+        op.hijos.add(ne);
+        RESULT = op;
+       
+    :}  
+|Sentencias:ne{:
+Nodo cuerpo = new Nodo("CJS",neleft,neright);
+cuerpo.hijos.add(ne);
+RESULT =cuerpo;
+:}
+;
+
+VARIABLE ::=var identificador:id dosPuntos LOGICA:log puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log);
+    :}
+
+| var identificador:id1  puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+       
+    :}
+| var identificador:id1 llaveL LOGICA:log llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+        RESULT.hijos.add(log);
+    :}
+| var identificador:id1 llaveL LOGICA:log llaveR dosPuntos llaveL LOGICA:log2 llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+        RESULT.hijos.add(log);
+RESULT.hijos.add(log2);
+    :}
+|var identificador:id dosPuntos llaveL LOGICA:log llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log);
+    :}
+
+|identificador:id dosPuntos LOGICA:log puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log);
+    :}
+
+| identificador:id1  puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+       
+    :}
+| identificador:id1 llaveL LOGICA:log llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+        RESULT.hijos.add(log);
+    :}
+| identificador:id1 llaveL LOGICA:log llaveR dosPuntos llaveL LOGICA:log2 llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+        RESULT.hijos.add(log);
+RESULT.hijos.add(log2);
+    :}
+| identificador:id dosPuntos llaveL LOGICA:log llaveR puntoComa
+    {:
+        RESULT = new Nodo("VARIABLE", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log);
+    :}
+;
+
+L_ID ::= L_ID:lid coma identificador:id
+    {:
+        RESULT = lid;
+        RESULT.hijos.add(new NodoAST(id, idleft+1, idright));
+    :}
+| identificador:id1 coma identificador:id2
+    {:
+        RESULT = new Nodo(Constante.L_ID, id1left+1, id1right);
+        RESULT.hijos.add(new NodoAST(id1, id1left+1, id1right));
+        RESULT.hijos.add(new NodoAST(id2, id2left+1, id2right));
+    :}
+;
+
+
+
+
+Sentencias ::= IMPRIMIR:sent {: RESULT = sent; :}
+| RETORNAR:sent {: RESULT = sent; :}
+| LLAMADA:sent puntoComa {: RESULT = sent; :}
+| VARIABLE:sent {: RESULT = sent; :}
+| SI:sent {: RESULT = sent; :}
+| SELECCIONA:sent {: RESULT = sent; :}
+| PARA:sent {: RESULT = sent; :}
+| HACER:sent {: RESULT = sent; :}
+| MIENTRAS:sent {: RESULT = sent; :}
+| continuar:sent puntoComa {: RESULT = new Nodo("CONTINUAR", sentleft+1, sentright); :}
+| terminar:sent puntoComa {: RESULT = new Nodo("TERMINAR", sentleft+1, sentright); :}
+| funcion:sent datos parL parR puntoComa {: RESULT = new Nodo("LLAMADA_DATO", sentleft+1, sentright); :}
+| identificador:id aumento
+    {:
+        RESULT = new Nodo("AUMENTO", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+    :}
+| identificador:id disminucion
+    {:
+        RESULT = new Nodo("DISMINUCION", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+    :}
+;
+
+IMPRIMIR ::= imprimir:im parL LOGICA:log parR puntoComa
+    {: 
+        RESULT = new Nodo("IMPRIMIR", imleft+1, imright);
+        RESULT.hijos.add(log);
+    :}
+;
+
+
+SI ::= si parL LOGICA:log parR llaveL Sentencias:lsent llaveR
+    {:
+        RESULT = new Nodo("SI", logleft+1, logright);
+        RESULT.hijos.add(log);
+        RESULT.hijos.add(lsent);
+    :}
+| si parL LOGICA:log parR llaveL llaveR
+    {:
+        RESULT = new Nodo("SI", logleft+1, logright);
+        RESULT.hijos.add(log);
+    :}
+| si parL LOGICA:log parR llaveL Sentencias:lsent llaveR SINO:sino
+    {:
+        RESULT = new Nodo("SI", logleft+1, logright);
+        RESULT.hijos.add(log);
+        RESULT.hijos.add(lsent);
+        RESULT.hijos.add(sino);
+    :}
+| si parL LOGICA:log parR llaveL llaveR SINO:sino
+    {:
+        RESULT = new Nodo("SI", logleft+1, logright);
+        RESULT.hijos.add(log);
+        RESULT.hijos.add(sino);
+    :}
+;
+
+SINO ::= sino:sino llaveL Sentencias:lsent llaveR
+    {:
+        RESULT = new Nodo("SINO", sinoleft+1, sinoright);
+        RESULT.hijos.add(lsent);
+    :}
+| sino:sino llaveL llaveR
+    {:
+        RESULT = new Nodo("SINO", sinoleft+1, sinoright);
+    :}
+;
+
+SELECCIONA ::= seleccion parL ARITMETICA:id parR llaveL L_CASO:lcaso DEFECTO:defecto llaveR
+    {:
+        RESULT = new Nodo("SELECCIONA", idleft+1, idright);
+        RESULT.hijos.add(id);
+        RESULT.hijos.add(lcaso);
+        RESULT.hijos.add(defecto);
+    :}
+| seleccion parL ARITMETICA:id parR llaveL L_CASO:lcaso llaveR
+    {:
+        RESULT = new Nodo("SELECCIONA", idleft+1, idright);
+        RESULT.hijos.add(id);
+        RESULT.hijos.add(lcaso);
+    :}
+| seleccion parL ARITMETICA:id  parR llaveL DEFECTO:defecto llaveR
+    {:
+        RESULT = new Nodo("SELECCIONA", idleft+1, idright);
+        RESULT.hijos.add(id);
+        RESULT.hijos.add(defecto);
+    :}
+;
+
+L_CASO ::= L_CASO:lcaso CASO:caso
+    {:
+        RESULT = lcaso;
+        RESULT.hijos.add(caso);
+    :}
+| CASO:caso
+    {:
+        RESULT = new Nodo("L_CASO", casoleft+1, casoright);
+        RESULT.hijos.add(caso);
+    :}
+; 
+
+CASO ::= caso LOGICA:log dosPuntos Sentencias:lsent
+    {:
+        RESULT = new Nodo("CASO", logleft+1, logright);
+        RESULT.hijos.add(log);
+        RESULT.hijos.add(lsent);
+    :}
+| caso LOGICA:log dosPuntos
+    {:
+        RESULT = new Nodo("CASO", logleft+1, logright);
+        RESULT.hijos.add(log);
+    :}
+;
+
+DEFECTO ::= defecto:log dosPuntos Sentencias:lsent
+    {:
+        RESULT = new Nodo("DEFECTO", logleft+1, logright);
+        RESULT.hijos.add(lsent);
+    :}
+;
+
+PARA ::=para:p parL identificador:id dosPuntos LOGICA:log1 puntoComa LOGICA:log2 puntoComa LOGICA:log3 parR llaveL Sentencias:lsent llaveR
+    {:
+        RESULT = new Nodo("PARA", pleft+1, pright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log1);   
+RESULT.hijos.add(log2);
+        RESULT.hijos.add(log3);
+        RESULT.hijos.add(lsent);
+    :}
+| para:p parL identificador:id dosPuntos LOGICA:log1 puntoComa  LOGICA:log2 puntoComa LOGICA:log3 parR llaveL llaveR
+    {:
+        RESULT = new Nodo("PARA", pleft+1, pright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(log1);
+        RESULT.hijos.add(log2);
+        RESULT.hijos.add(log3);
+    :}
+;
+
+MIENTRAS ::= mientras parL LOGICA:log parR llaveL Sentencias:lsent llaveR
+    {:
+        RESULT = new Nodo("MIENTRAS", logleft+1, logright);
+        RESULT.hijos.add(log);
+        RESULT.hijos.add(lsent);
+    :}
+| mientras parL LOGICA:log parR llaveL llaveR
+    {:
+        RESULT = new Nodo("MIENTRAS", logleft+1, logright);
+        RESULT.hijos.add(log);
+    :}
+;
+
+
+
+
+LOGICA ::= LOGICA:l or LOGICA:r
+    {:
+        RESULT = new Nodo("LOGICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("OR"));
+        RESULT.hijos.add(r);
+    :}
+| LOGICA:l xor LOGICA:r
+    {:
+        RESULT = new Nodo("LOGICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("XOR", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| LOGICA:l and LOGICA:r
+    {:
+        RESULT = new Nodo("LOGICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("AND", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| not LOGICA:log
+    {:
+        RESULT = new Nodo("LOGICA", logleft+1, logright);
+        RESULT.hijos.add(new Nodo("NOT", logleft+1, logright));
+        RESULT.hijos.add(log);
+    :}
+| RELACIONAL:rel
+    {:
+        RESULT = new Nodo("LOGICA", relleft+1, relright);
+        RESULT.hijos.add(rel);
+    :}
+;
+
+RELACIONAL ::= RELACIONAL:l igual RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("IGUAL", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| RELACIONAL:l distinto RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("DISTINTO", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| RELACIONAL:l mayor RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MAYOR", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| RELACIONAL:l menor RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MENOR", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| RELACIONAL:l mayorIgual RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MAYORIGUAL", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| RELACIONAL:l menorIgual RELACIONAL:r
+    {:
+        RESULT = new Nodo("RELACIONAL", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MENORIGUAL", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| ARITMETICA:art
+    {:
+        RESULT = new Nodo("RELACIONAL", artleft+1, artright);
+        RESULT.hijos.add(art);
+    :}
+;
+
+ARITMETICA ::= ARITMETICA:l mas ARITMETICA:r
+    {:
+        RESULT = new Nodo("ARITMETICA");
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MAS", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| ARITMETICA:l menos ARITMETICA:r
+    {:
+        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("MENOS", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| ARITMETICA:l div ARITMETICA:r
+    {:
+        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("DIV", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| ARITMETICA:l por ARITMETICA:r
+    {:
+        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("POR", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| ARITMETICA:l potencia ARITMETICA:r
+    {:
+        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT.hijos.add(l);
+        RESULT.hijos.add(new Nodo("POTENCIA", lleft+1, lright));
+        RESULT.hijos.add(r);
+    :}
+| menos ARITMETICA:art
+    {:
+        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT.hijos.add(new Nodo("0", artleft+1, artright));
+        RESULT.hijos.add(new Nodo("MENOS", artleft+1, artright));
+        RESULT.hijos.add(art);
+    :}
+| parL LOGICA:log parR
+    {:
+        RESULT = new Nodo("ARITMETICA", logleft+1, logright);
+        RESULT.hijos.add(log);
+    :}
+| ARITMETICA:art aumento
+    {:
+        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT.hijos.add(art);
+        RESULT.hijos.add(new Nodo("AUMENTO", artleft+1, artright));
+    :}
+| ARITMETICA:art disminucion
+    {:
+        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT.hijos.add(art);
+        RESULT.hijos.add(new Nodo("DISMINUCION", artleft+1, artright));
+    :}
+| valCadena:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| valCaracter:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| valDecimal:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| valEntero:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| verdadero:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| falso:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
+    :}
+| LLAMADA:val
+    {:
+        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT.hijos.add(val);
+    :}
+| identificador:id 
+    {:
+        RESULT = new Nodo("ARITMETICA", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+    :}
+| identificador:id L_DIMENSION:ldim
+    {:
+        RESULT = new Nodo("ARITMETICA", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(ldim);
+    :}
+|  aumento
+    {:
+        RESULT = new Nodo("ARITMETICA");
+        RESULT.hijos.add(new Nodo("AUMENTO"));
+    :}
+|  disminucion
+    {:
+        RESULT = new Nodo("ARITMETICA");
+        RESULT.hijos.add(new Nodo("DISMINUCION"));
+    :}
+;

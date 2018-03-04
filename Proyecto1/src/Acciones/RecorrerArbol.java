@@ -814,7 +814,7 @@ return posicion;
                              //   System.out.println(id);
                                   if(CCSS.BuscarCSS(listacss,id)==true){
                                int i=CCSS.getIndexOfCSS(listacss,id);
-                               CCSS.csslabel(Objeto3,listacss,i);
+                               CCSS.cssimagen(Objeto3,listacss,i);
                                
                                 }else{
                                    System.out.println("No Existe css");}
@@ -824,7 +824,7 @@ return posicion;
                           //      System.out.println(grupo);
                                   if(CCSS.BuscarCSS(listacss,grupo)==true){
                                int i=CCSS.getIndexOfCSS(listacss,grupo);
-                               CCSS.csslabel(Objeto3,listacss,i);
+                               CCSS.cssimagen(Objeto3,listacss,i);
                                
                                 }else{
                                    System.out.println("No Existe css");}

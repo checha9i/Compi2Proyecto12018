@@ -34,7 +34,7 @@ public class LeerArchivo {
          // Lectura del fichero
          String linea;
          while((linea=br.readLine())!=null)
-            contenido+=linea+"";
+            contenido+=linea+"\n";
       }catch(Exception e){
          e.printStackTrace();
       }finally{
