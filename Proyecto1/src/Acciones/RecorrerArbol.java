@@ -137,10 +137,16 @@ return posicion;
          
                CCSS.AnalizarCCSS(comp,listacss);
                CCSS.MemoriaCSS(listacss);
-                       System.out.println("Se cargo a memoria el css");
+                       //System.out.println("Se cargo a memoria el css");
                 break;
             case "CJS":
-                
+           /*   String urlcjs=nodoactual.hijos.get(0).valor;
+                             LeerArchivo leercjs = new LeerArchivo();
+            String compcjs = leercjs.LeerArchivo(urlcjs);
+         
+               CCSS.AnalizarCCSS(compcjs,listacss);
+               CCSS.MemoriaCSS(listacss);
+                       System.out.println("Se cargo a memoria el cjs");*/
                 break;
                 
             case "titulo":
@@ -211,7 +217,7 @@ return posicion;
                                CCSS.csspanel(panel,listacss,i);
                                panel.repaint();
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                
                                 break;
                             case "grupo":
@@ -222,7 +228,8 @@ return posicion;
                                CCSS.csspanel(panel,listacss,i);
                                panel.repaint();
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   //System.out.println("No Existe css");
+                                }
                                
                                 break;
                             case "alineado":
@@ -364,7 +371,8 @@ return posicion;
                                CCSS.csstextarea(textarea,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   ////System.out.println("No Existe css");
+                                }
                                
                               //  System.out.println(id);
                                 break;
@@ -376,7 +384,8 @@ return posicion;
                                CCSS.csstextarea(textarea,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   System.out.println("No Existe css");
+                                     }
                                
                                 break;
                             case "alineado":
@@ -473,7 +482,8 @@ return posicion;
                                CCSS.csscajaopcion(cajaopcion,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   System.out.println("No Existe css");
+                                   }
                                
                                 break;
                             case "grupo":
@@ -484,7 +494,7 @@ return posicion;
                                CCSS.csscajaopcion(cajaopcion,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                
                                         
                                 break;
@@ -726,7 +736,7 @@ return posicion;
                                CCSS.csslabel(Objeto,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                              //   System.out.println(id);
                                 break;
                             case "grupo":
@@ -737,7 +747,7 @@ return posicion;
                                CCSS.csslabel(Objeto,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 break;
                             case "alineado":
                                 String alig;
@@ -817,7 +827,7 @@ return posicion;
                                CCSS.cssimagen(Objeto3,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
@@ -827,7 +837,7 @@ return posicion;
                                CCSS.cssimagen(Objeto3,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 break;
                             case "alineado":
                                 String alig;
@@ -959,7 +969,7 @@ return posicion;
                                CCSS.cssboton(Boton,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 
                                 break;
                             case "grupo":
@@ -970,7 +980,7 @@ return posicion;
                                CCSS.cssboton(Boton,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                
                                 break;
                             case "alineado":
@@ -1056,7 +1066,7 @@ return posicion;
                                CCSS.csslabel(Objeto2,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 break;
                             case "grupo":
                                 grupo=hijo.hijos.get(0).valor;
@@ -1066,7 +1076,7 @@ return posicion;
                                CCSS.csslabel(Objeto2,listacss,i);
                                
                                 }else{
-                                   System.out.println("No Existe css");}
+                                   }
                                 break;
                             case "alineado":
                                 String alig;

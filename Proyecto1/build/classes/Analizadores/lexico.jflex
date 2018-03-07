@@ -40,7 +40,6 @@ identificador = {letra}({letra}|{entero}|"_")*
 string = "\""~"\""
 
 //-------------------> Estados
-%state COMENT_SIMPLE
 %state COMENT_MULTI
 %%
 /*-------------------------------------------------------------------
@@ -143,8 +142,7 @@ string = "\""~"\""
 {identificador}	{return new Symbol(Simbolos.identificador, yycolumn, yyline, new String(yytext())); }
 {string}        {return new Symbol(Simbolos.stringcad, yycolumn, yyline, new String(yytext()));  }
 
-"<//" {yybegin(COMENT_SIMPLE);}
-"/*" {yybegin(COMENT_MULTI);}
+"<//-" {yybegin(COMENT_MULTI);}
 
 
 ///// ESPACIOS Y SALTOS DE LINEA
@@ -165,14 +163,17 @@ string = "\""~"\""
 }
 
 
-<COMENT_SIMPLE>{
-	[//>] { yybegin(YYINITIAL);}
-	[^\n] {}
-}
 
 <COMENT_MULTI>{
-	"*/" {yybegin(YYINITIAL);}
-	. {}
+	. {}	
+"\r|\n|\r\n" {}
+[\t\f] {}
+[\r\n] {}
+" " {}
+[\t] {}
+[\r] {}
+[\f] {}
+[\n] {}
+"-//>" {yybegin(YYINITIAL);}
+	
 }
-
-

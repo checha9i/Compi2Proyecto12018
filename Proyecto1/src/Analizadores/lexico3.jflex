@@ -59,6 +59,7 @@ identificador = {letra}({letra}|{digito}|"_")*
 "/" { return new Symbol(SimbolosCJS.div, yycolumn, yyline, new String(yytext())); }
 "^" { return new Symbol(SimbolosCJS.potencia, yycolumn, yyline, new String(yytext())); }
 
+
 //// lOGICOS
 
 "||" { return new Symbol(SimbolosCJS.or, yycolumn, yyline, new String(yytext())); }
@@ -142,6 +143,14 @@ identificador = {letra}({letra}|{digito}|"_")*
 <COMENTARIO_MULTI>{
 	"'" {yybegin(YYINITIAL);}
 	. {}
+"\r|\n|\r\n" {}
+[\t\f] {}
+[\r\n] {}
+" " {}
+[\t] {}
+[\r] {}
+[\f] {}
+[\n] {}
 }
 
 <CADENA>{

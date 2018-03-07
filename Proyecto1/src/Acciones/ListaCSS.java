@@ -46,7 +46,7 @@ public class ListaCSS {
    this.ThicknessBorde=1;
    this.curveBorde=false;
    this.colortext=Color.black;
-   
+  
    this.letra="Arial";
    this.opaque=true;
    this.tamtext=5;

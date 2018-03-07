@@ -5,7 +5,7 @@
             <url>src/Acciones/RecorrerArbol.java</url>
             <bookmark id="4">
                 <name/>
-                <line>725</line>
+                <line>731</line>
                 <key/>
             </bookmark>
         </file>
@@ -13,10 +13,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Principal/Plantilla.java</file>
+            <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/EjecutarCJS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/GraficadorCJS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/lexico.jflex</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Generadores/GenSintacCSS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/lexico2.jflex</file>
+            <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/Nodo.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/Compilador.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/SintacticoCSS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Generadores/GenLexCSS.java</file>
@@ -25,6 +27,8 @@
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/sintactico2.cup</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/RecorrerCSS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Generadores/GenSintacHtml.java</file>
+            <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/Sintactico.java</file>
+            <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/Valor.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/LexicoCJS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Principal/Home.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/Historial.java</file>
@@ -32,6 +36,7 @@
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/RecorrerArbol.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/sintactico3.cup</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Generadores/GenLexHtml.java</file>
+            <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Principal/Opciones.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/Graficador.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Acciones/ListaCSS.java</file>
             <file>file:/C:/Users/chech/OneDrive/Documentos/GitHub/Compi2Proyecto12018/Proyecto1/src/Analizadores/lexico3.jflex</file>

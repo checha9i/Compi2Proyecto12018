@@ -45,13 +45,13 @@ action code
 terminal String valEntero, valDecimal, valCaracter, valCadena, verdadero,asignar, falso, identificador, privado, publico, protegido, mas, menos, por, div, potencia, or, and, xor, not, mayor, menor, 
 mayorIgual, menorIgual, igual, distinto, puntoComa,obtener,detener,setelemento,observador,mensaje,documento,retornar,
 aumento, disminucion, var, entero, decimal, inicio,imprimir,funcion, datos, columna, procesar, donde, dondecada, dondetodo, si, sino, seleccion, caso, defecto, 
-para, mientras, hacer, continuar, terminar, parL, parR, corchL, corchR, llaveR, llaveL, coma, dosPuntos, punto,stringcad;
+para, mientras, hacer, continuar, terminar, parL, parR, corchL, corchR, llaveR, llaveL, coma, dosPuntos, punto,stringcad,mod;
 
 nonterminal Nodo INICIAL, S, finVar,
 L_IMPORTACION, IMPORTACION, L_CUERPO, CUERPO, Sentencias, SENTENCIA, METODO, ATRIBUTO,
 PRINCIPAL, TIPO, TIPO_FUNCION, L_PARAMETRO, L_PARAMETRO_LLAMADA, L_ID, IMPRIMIR, LOGICA, RELACIONAL, ARITMETICA, L_DIMENSION, L_GRUPO,
 LLAMADA, SI, SINO, SELECCIONA, PARA, MIENTRAS, L_CASO, CASO, L_ATRIBUTO, ACCESO_ALS, ATRIBUTO_ACCESO, RETORNAR, VARIABLE, DEFECTO, HACER, L_EXPRESION, GRAPHIKAR,
-DONDE, DONDETODO, DONDECADA, SENTENCIA_DATO, DATO;
+DONDE, DONDETODO, DONDECADA, SENTENCIA_DATO, DATO,MENSAJE;
 precedence left mas, menos;
 precedence left por, div; 
 precedence right potencia; 
@@ -82,7 +82,7 @@ S::=  S:op Sentencias:ne
        
     :}  
 |Sentencias:ne{:
-Nodo cuerpo = new Nodo("CJS",neleft,neright);
+Nodo cuerpo = new Nodo("Ambito",neleft,neright);
 cuerpo.hijos.add(ne);
 RESULT =cuerpo;
 :}
@@ -94,7 +94,11 @@ VARIABLE ::=var identificador:id dosPuntos LOGICA:log puntoComa
         RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
         RESULT.hijos.add(log);
     :}
-
+|var L_ID:hi puntoComa{:
+        RESULT = new Nodo("VARIABLE");
+        RESULT.hijos.add(hi);
+        
+:}
 | var identificador:id1  puntoComa
     {:
         RESULT = new Nodo("VARIABLE", id1left+1, id1right);
@@ -158,13 +162,13 @@ RESULT.hijos.add(log2);
 L_ID ::= L_ID:lid coma identificador:id
     {:
         RESULT = lid;
-        RESULT.hijos.add(new NodoAST(id, idleft+1, idright));
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
     :}
 | identificador:id1 coma identificador:id2
     {:
-        RESULT = new Nodo(Constante.L_ID, id1left+1, id1right);
-        RESULT.hijos.add(new NodoAST(id1, id1left+1, id1right));
-        RESULT.hijos.add(new NodoAST(id2, id2left+1, id2right));
+        RESULT = new Nodo("Lista_ID", id1left+1, id1right);
+        RESULT.hijos.add(new Nodo(id1.toString(), id1left+1, id1right));
+        RESULT.hijos.add(new Nodo(id2.toString(), id2left+1, id2right));
     :}
 ;
 
@@ -172,26 +176,44 @@ L_ID ::= L_ID:lid coma identificador:id
 
 
 Sentencias ::= IMPRIMIR:sent {: RESULT = sent; :}
+| MENSAJE:sent {: RESULT = sent; :}
 | RETORNAR:sent {: RESULT = sent; :}
-| LLAMADA:sent puntoComa {: RESULT = sent; :}
+| LLAMADA:sent  {: RESULT = sent; :}
 | VARIABLE:sent {: RESULT = sent; :}
 | SI:sent {: RESULT = sent; :}
 | SELECCIONA:sent {: RESULT = sent; :}
 | PARA:sent {: RESULT = sent; :}
 | HACER:sent {: RESULT = sent; :}
 | MIENTRAS:sent {: RESULT = sent; :}
-| continuar:sent puntoComa {: RESULT = new Nodo("CONTINUAR", sentleft+1, sentright); :}
-| terminar:sent puntoComa {: RESULT = new Nodo("TERMINAR", sentleft+1, sentright); :}
-| funcion:sent datos parL parR puntoComa {: RESULT = new Nodo("LLAMADA_DATO", sentleft+1, sentright); :}
-| identificador:id aumento
+| terminar:sent puntoComa {: RESULT = new Nodo("DETENER", sentleft+1, sentright); :}
+| identificador:sent parL parR puntoComa
+    {: 
+        RESULT = new Nodo("LLAMADA_FUNCION");
+        RESULT.hijos.add(new Nodo(sent.toString(), sentleft+1, sentright));
+    :}
+| identificador:id aumento puntoComa
     {:
         RESULT = new Nodo("AUMENTO", idleft+1, idright);
         RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
     :}
-| identificador:id disminucion
+| identificador:id disminucion puntoComa
     {:
         RESULT = new Nodo("DISMINUCION", idleft+1, idright);
         RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+    :}
+;
+
+RETORNAR ::= retornar:ret LOGICA:log puntoComa
+    {:
+         RESULT = new Nodo("RETORNAR", retleft+1, retright);
+        RESULT.hijos.add(log);
+    :}
+;
+
+MENSAJE ::= mensaje:im parL LOGICA:log parR puntoComa
+    {: 
+        RESULT = new Nodo("IMPRIMIR", imleft+1, imright);
+        RESULT.hijos.add(log);
     :}
 ;
 
@@ -202,8 +224,46 @@ IMPRIMIR ::= imprimir:im parL LOGICA:log parR puntoComa
     :}
 ;
 
+LLAMADA ::= funcion identificador:id parL L_PARAMETRO_LLAMADA:lpar parR llaveL S:ese llaveR
+    {:
+        RESULT = new Nodo("LLAMADA", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(lpar);
+        RESULT.hijos.add(ese);
+    :}
+| funcion identificador:id parL parR llaveL S:ese llaveR
+    {:
+        RESULT = new Nodo("LLAMADA");
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(ese);    
+:}
+|funcion identificador:id parL L_PARAMETRO_LLAMADA:lpar parR llaveL llaveR
+    {:
+        RESULT = new Nodo("LLAMADA", idleft+1, idright);
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+        RESULT.hijos.add(lpar);
+    :}
+| funcion identificador:id parL parR llaveL llaveR
+    {:
+        RESULT = new Nodo("LLAMADA");
+        RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
+    :}
+;
 
-SI ::= si parL LOGICA:log parR llaveL Sentencias:lsent llaveR
+L_PARAMETRO_LLAMADA ::= L_PARAMETRO_LLAMADA:lpar coma LOGICA:log
+    {:
+        RESULT = lpar;
+        RESULT.hijos.add(log);
+    :}
+| LOGICA:log
+    {:
+        RESULT = new Nodo("L_PARAMETRO_LLAMADA");
+        RESULT.hijos.add(log);
+    :}
+;
+
+
+SI ::= si parL LOGICA:log parR llaveL S:lsent llaveR
     {:
         RESULT = new Nodo("SI", logleft+1, logright);
         RESULT.hijos.add(log);
@@ -214,7 +274,7 @@ SI ::= si parL LOGICA:log parR llaveL Sentencias:lsent llaveR
         RESULT = new Nodo("SI", logleft+1, logright);
         RESULT.hijos.add(log);
     :}
-| si parL LOGICA:log parR llaveL Sentencias:lsent llaveR SINO:sino
+| si parL LOGICA:log parR llaveL S:lsent llaveR SINO:sino
     {:
         RESULT = new Nodo("SI", logleft+1, logright);
         RESULT.hijos.add(log);
@@ -229,7 +289,7 @@ SI ::= si parL LOGICA:log parR llaveL Sentencias:lsent llaveR
     :}
 ;
 
-SINO ::= sino:sino llaveL Sentencias:lsent llaveR
+SINO ::= sino:sino llaveL S:lsent llaveR
     {:
         RESULT = new Nodo("SINO", sinoleft+1, sinoright);
         RESULT.hijos.add(lsent);
@@ -273,7 +333,7 @@ L_CASO ::= L_CASO:lcaso CASO:caso
     :}
 ; 
 
-CASO ::= caso LOGICA:log dosPuntos Sentencias:lsent
+CASO ::= caso LOGICA:log dosPuntos S:lsent
     {:
         RESULT = new Nodo("CASO", logleft+1, logright);
         RESULT.hijos.add(log);
@@ -286,14 +346,14 @@ CASO ::= caso LOGICA:log dosPuntos Sentencias:lsent
     :}
 ;
 
-DEFECTO ::= defecto:log dosPuntos Sentencias:lsent
+DEFECTO ::= defecto:log dosPuntos S:lsent
     {:
         RESULT = new Nodo("DEFECTO", logleft+1, logright);
         RESULT.hijos.add(lsent);
     :}
 ;
 
-PARA ::=para:p parL identificador:id dosPuntos LOGICA:log1 puntoComa LOGICA:log2 puntoComa LOGICA:log3 parR llaveL Sentencias:lsent llaveR
+PARA ::=para:p parL identificador:id dosPuntos LOGICA:log1 puntoComa LOGICA:log2 puntoComa LOGICA:log3 parR llaveL S:lsent llaveR
     {:
         RESULT = new Nodo("PARA", pleft+1, pright);
         RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
@@ -312,7 +372,7 @@ RESULT.hijos.add(log2);
     :}
 ;
 
-MIENTRAS ::= mientras parL LOGICA:log parR llaveL Sentencias:lsent llaveR
+MIENTRAS ::= mientras parL LOGICA:log parR llaveL S:lsent llaveR
     {:
         RESULT = new Nodo("MIENTRAS", logleft+1, logright);
         RESULT.hijos.add(log);
@@ -348,12 +408,6 @@ LOGICA ::= LOGICA:l or LOGICA:r
         RESULT.hijos.add(l);
         RESULT.hijos.add(new Nodo("AND", lleft+1, lright));
         RESULT.hijos.add(r);
-    :}
-| not LOGICA:log
-    {:
-        RESULT = new Nodo("LOGICA", logleft+1, logright);
-        RESULT.hijos.add(new Nodo("NOT", logleft+1, logright));
-        RESULT.hijos.add(log);
     :}
 | RELACIONAL:rel
     {:
@@ -406,108 +460,109 @@ RELACIONAL ::= RELACIONAL:l igual RELACIONAL:r
     :}
 | ARITMETICA:art
     {:
-        RESULT = new Nodo("RELACIONAL", artleft+1, artright);
+        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
         RESULT.hijos.add(art);
     :}
 ;
 
 ARITMETICA ::= ARITMETICA:l mas ARITMETICA:r
     {:
-        RESULT = new Nodo("ARITMETICA");
+        RESULT = new Nodo("SUMA");
         RESULT.hijos.add(l);
-        RESULT.hijos.add(new Nodo("MAS", lleft+1, lright));
         RESULT.hijos.add(r);
     :}
 | ARITMETICA:l menos ARITMETICA:r
     {:
-        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT = new Nodo("RESTA", lleft+1, lright);
         RESULT.hijos.add(l);
-        RESULT.hijos.add(new Nodo("MENOS", lleft+1, lright));
         RESULT.hijos.add(r);
     :}
 | ARITMETICA:l div ARITMETICA:r
     {:
-        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT = new Nodo("DIV", lleft+1, lright);
         RESULT.hijos.add(l);
-        RESULT.hijos.add(new Nodo("DIV", lleft+1, lright));
         RESULT.hijos.add(r);
     :}
 | ARITMETICA:l por ARITMETICA:r
     {:
-        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT = new Nodo("POR", lleft+1, lright);
         RESULT.hijos.add(l);
-        RESULT.hijos.add(new Nodo("POR", lleft+1, lright));
         RESULT.hijos.add(r);
     :}
 | ARITMETICA:l potencia ARITMETICA:r
     {:
-        RESULT = new Nodo("ARITMETICA", lleft+1, lright);
+        RESULT = new Nodo("POTENCIA", lleft+1, lright);
         RESULT.hijos.add(l);
-        RESULT.hijos.add(new Nodo("POTENCIA", lleft+1, lright));
         RESULT.hijos.add(r);
     :}
 | menos ARITMETICA:art
     {:
-        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT = new Nodo("NEGACION", artleft+1, artright);
         RESULT.hijos.add(new Nodo("0", artleft+1, artright));
         RESULT.hijos.add(new Nodo("MENOS", artleft+1, artright));
         RESULT.hijos.add(art);
     :}
 | parL LOGICA:log parR
     {:
-        RESULT = new Nodo("ARITMETICA", logleft+1, logright);
+        RESULT = new Nodo("PARENTESIS", logleft+1, logright);
         RESULT.hijos.add(log);
     :}
 | ARITMETICA:art aumento
     {:
-        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT = new Nodo("AUMENTO", artleft+1, artright);
         RESULT.hijos.add(art);
         RESULT.hijos.add(new Nodo("AUMENTO", artleft+1, artright));
     :}
 | ARITMETICA:art disminucion
     {:
-        RESULT = new Nodo("ARITMETICA", artleft+1, artright);
+        RESULT = new Nodo("DISMINUCION", artleft+1, artright);
         RESULT.hijos.add(art);
         RESULT.hijos.add(new Nodo("DISMINUCION", artleft+1, artright));
     :}
+| not LOGICA:log
+    {:
+        RESULT = new Nodo("NOT", logleft+1, logright);
+        RESULT.hijos.add(log);
+    :}
 | valCadena:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("CADENA", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
 | valCaracter:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("CARACTER", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
 | valDecimal:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("DECIMAL", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
 | valEntero:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("ENTERO", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
 | verdadero:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("BOOLEAN", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
 | falso:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("BOOLEAN", valleft+1, valright);
         RESULT.hijos.add(new Nodo(val.toString(), valleft+1, valright));
     :}
+
 | LLAMADA:val
     {:
-        RESULT = new Nodo("ARITMETICA", valleft+1, valright);
+        RESULT = new Nodo("FUNCION", valleft+1, valright);
         RESULT.hijos.add(val);
     :}
 | identificador:id 
     {:
-        RESULT = new Nodo("ARITMETICA", idleft+1, idright);
+        RESULT = new Nodo("IDENTIFICADOR", idleft+1, idright);
         RESULT.hijos.add(new Nodo(id.toString(), idleft+1, idright));
     :}
 | identificador:id L_DIMENSION:ldim
@@ -518,12 +573,10 @@ ARITMETICA ::= ARITMETICA:l mas ARITMETICA:r
     :}
 |  aumento
     {:
-        RESULT = new Nodo("ARITMETICA");
-        RESULT.hijos.add(new Nodo("AUMENTO"));
+        RESULT = new Nodo("AUMENTO");
     :}
 |  disminucion
     {:
-        RESULT = new Nodo("ARITMETICA");
-        RESULT.hijos.add(new Nodo("DISMINUCION"));
+        RESULT = new Nodo("DISMINUCION");
     :}
 ;

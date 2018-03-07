@@ -42,10 +42,16 @@ public class CompiladorCJS
             
             //Graficar
             //this.graficarAST(parser.raiz);            
-            Graficador g = new Graficador();
-            g.graficarAST(parser.raiz);
-            
+            try {
+                GraficadorCJS g = new GraficadorCJS();
+                g.graficarAST(parser.raiz);
+                
+            } catch (Exception e) {
+            Logger.getLogger(CompiladorCJS.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Ocurrio un grave problema","Ejemplo 1 AST",2);
+            }
             //Recorrido
+            
             this.recorrido(parser.raiz, consola);
         } 
         catch (Exception ex) 

@@ -26,8 +26,8 @@ public class GraficadorCJS
         
         
         //Rutas para el .dot y la imagen .png
-        String ruta_dot = System.getProperty("user.home") + File.separator +"SalidasDot"+File.separator+"astcss.dot"; 
-        String ruta_png = System.getProperty("user.home") + File.separator +"SalidasDot"+File.separator+"astcss.png"; 
+        String ruta_dot = System.getProperty("user.home") + File.separator +"SalidasDot"+File.separator+"astcjs.dot"; 
+        String ruta_png = System.getProperty("user.home") + File.separator +"SalidasDot"+File.separator+"astcsjs.png"; 
         
         //Arma el contenido del .dot
         this.armar_Cuerpo_dot(raiz, ruta_dot);        

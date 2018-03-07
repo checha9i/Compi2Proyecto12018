@@ -321,9 +321,14 @@ public class Home extends javax.swing.JFrame
 
 if(txtentrada.getText().length()!=0 || !txtentrada.getText().equals(""))
         {
-            CompiladorCJS c = new CompiladorCJS();
-            c.Analizar(this.txtentrada.getText(),this.txtsalida);
-          
+           
+            try {
+                CompiladorCJS c = new CompiladorCJS();
+                c.Analizar(this.txtentrada.getText(), this.txtsalida);
+                
+            } catch (Exception e) {
+                System.out.println("error cjs: "+e);
+            }
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed

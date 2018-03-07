@@ -77,7 +77,7 @@ public int GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
                     case "letra":
                     String fonts[] =GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
                         for ( int i = 0; i < fonts.length; i++ ){
-                        System.out.println(fonts[i]);
+                        
                         if(fonts[i].compareTo(ncss.hijos.get(0).valor)==0){
                         css.letra=fonts[i];
                         }
@@ -170,7 +170,7 @@ public int GuardarCSS(Nodo nodoactual,ArrayList<ListaCSS> lista){
                         
                           String fonts[] =GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
                         for ( int i = 0; i < fonts.length; i++ ){
-                        System.out.println(fonts[i]);
+                       
                         if(fonts[i].compareTo(ncss.hijos.get(0).valor)==0){
                         css2.letra=fonts[i];
                         }
@@ -287,23 +287,23 @@ public void MemoriaCSS(ArrayList<ListaCSS> lista){
     if(!lista.isEmpty()){
         
         for(int i=0;i<lista.size();i++){
-            System.out.println("index: "+lista.get(i).index);
-            System.out.println("Grupo: "+lista.get(i).GRUPO);
-            System.out.println("ID: "+lista.get(i).ID);
-            System.out.println("Alineado: "+lista.get(i).alineado);
-            System.out.println("AutoRedimension: ["+lista.get(i).autoredimension+","+lista.get(i).DirRedimension+"]");
-            System.out.println("Borde: ["+lista.get(i).ColorBorde+","+lista.get(i).ThicknessBorde+","+lista.get(i).curveBorde+"]");
-            System.out.println("ColorText: "+lista.get(i).colortext);
-            System.out.println("FondoElemento: "+lista.get(i).fondoelemento);
-            System.out.println("Letra: "+lista.get(i).letra);
-            System.out.println("Opaque: "+lista.get(i).opaque);
-            System.out.println("TamText: "+lista.get(i).tamtext);
-            System.out.println("Texto: "+lista.get(i).texto);
-            System.out.println("Visible: "+lista.get(i).visible);
+            //System.out.println("index: "+lista.get(i).index);
+            //System.out.println("Grupo: "+lista.get(i).GRUPO);
+            //System.out.println("ID: "+lista.get(i).ID);
+            //System.out.println("Alineado: "+lista.get(i).alineado);
+            //System.out.println("AutoRedimension: ["+lista.get(i).autoredimension+","+lista.get(i).DirRedimension+"]");
+            //System.out.println("Borde: ["+lista.get(i).ColorBorde+","+lista.get(i).ThicknessBorde+","+lista.get(i).curveBorde+"]");
+            //System.out.println("ColorText: "+lista.get(i).colortext);
+            //System.out.println("FondoElemento: "+lista.get(i).fondoelemento);
+            //System.out.println("Letra: "+lista.get(i).letra);
+            //System.out.println("Opaque: "+lista.get(i).opaque);
+            //System.out.println("TamText: "+lista.get(i).tamtext);
+            //System.out.println("Texto: "+lista.get(i).texto);
+            //System.out.println("Visible: "+lista.get(i).visible);
             /*  for(int j=0;j<lista.get(i).formato.length;j++){
-            System.out.println("Formato: "+lista.get(i).formato[j]);
+            //System.out.println("Formato: "+lista.get(i).formato[j]);
             }*/
-            System.out.println("FinID");
+            //System.out.println("FinID");
         }
     }
     
@@ -434,9 +434,18 @@ public void MemoriaCSS(ArrayList<ListaCSS> lista){
        public void cssboton(JButton label,ArrayList<ListaCSS> lista,int index){
     label.setBorder(BorderFactory.createLineBorder(lista.get(index).ColorBorde, lista.get(index).ThicknessBorde, lista.get(index).curveBorde));
     label.setBackground(lista.get(index).fondoelemento);
-    
-    
+    if(lista.get(index).alineado.compareTo("izquierda")==0){
+    label.setFont(new Font(lista.get(index).letra, Font.BOLD+Font.LAYOUT_LEFT_TO_RIGHT, lista.get(index).tamtext));
+    }
+    else if(lista.get(index).alineado.compareTo("derecha")==0){
+    label.setFont(new Font(lista.get(index).letra, Font.BOLD+Font.LAYOUT_RIGHT_TO_LEFT, lista.get(index).tamtext));
+    }
+    else if(lista.get(index).alineado.compareTo("centrado")==0){
+    label.setFont(new Font(lista.get(index).letra, Font.BOLD+Font.LAYOUT_NO_START_CONTEXT, lista.get(index).tamtext));
+    }else {
     label.setFont(new Font(lista.get(index).letra, Font.BOLD, lista.get(index).tamtext));
+    }
+    
     label.setVisible(lista.get(index).visible);
     label.setOpaque(lista.get(index).opaque);
     if(lista.get(index).texto.compareTo("")!=0){
